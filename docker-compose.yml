@@ -1,0 +1,27 @@
+version: "3"
+services:
+  db:
+    image: postgres:15.1
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: "postgres_password"
+      POSTGRES_DB: postgres
+    volumes:
+      - ./postgres/create_data_base.sql:/docker-entrypoint-initdb.d/create_data_base.sql
+      - pgdata:/var/lib/postgresqldb/data
+    ports:
+      - "5433:5432"
+
+  notepad-serivcedd:
+    build: ./notepad-service
+    container_name: notepad-service
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/fixchaos?currentSchema=notepad
+      DB_USER: postgres_user
+      DB_PASSWORD: "postgres_password"
+    depends_on:
+      - db
+
+volumes:
+  pgdata:

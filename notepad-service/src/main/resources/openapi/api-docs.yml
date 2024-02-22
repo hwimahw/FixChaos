@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+  title: LifePlanner Service - OpenAPI 1.0
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/customer
+tags:
+  - name: MainDirection
+    description: MainDirection API
+paths:
+  /v1/folder:
+    post:
+      operationId: createFolder
+      summary: Create new folder
+      tags:
+        - Folder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/FolderDto'
+        required: true
+      responses:
+        '201':
+          description: Main directions were created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FolderDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
+components:
+  schemas:
+    ErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: integer
+          description: Error status code
+        traceId:
+          type: string
+          description: Trace Id
+
+    FolderDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of main direction
+        subdirections:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderDto'
+        idf:
+          type: integer

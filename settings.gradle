@@ -1,0 +1,3 @@
+rootProject.name = 'FixChaos'
+include 'notepad-service'
+
