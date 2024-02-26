@@ -38,7 +38,7 @@ sourceSets  {
 tasks.compileJava.dependsOn(tasks.openApiGenerate)
 dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiUiVersion}"
-//    implementation "org.liquibase:liquibase-core"
+    implementation "org.liquibase:liquibase-core"
     implementation "org.openapitools:jackson-databind-nullable:${openApiToolsVersion}"
 }
 

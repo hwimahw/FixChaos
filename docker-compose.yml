@@ -13,7 +13,7 @@ services:
     ports:
       - "5433:5432"
 
-  notepad-serivcedd:
+  notepad-service:
     build: ./notepad-service
     container_name: notepad-service
     environment:

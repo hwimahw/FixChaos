@@ -18,9 +18,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/FolderDto'
+              $ref: '#/components/schemas/FolderDto'
         required: true
       responses:
         '201':
@@ -28,9 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FolderDto'
+                $ref: '#/components/schemas/FolderDto'
         '400':
           description: Invalid request
           content:
@@ -87,10 +83,35 @@ components:
         name:
           type: string
           nullable: false
-          description: Name of main direction
-        subdirections:
+          description: Name of folder
+        notebooks:
           type: array
           items:
-            $ref: '#/components/schemas/FolderDto'
-        idf:
-          type: integer
+            $ref: '#/components/schemas/NotebookDto'
+
+    NotebookDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of folder
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteDto'
+
+    NoteDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+        text:
+          type: string
