@@ -14,6 +14,9 @@ import ru.dhabits.fixchaos.notepad.service.FolderService;
 
 import java.util.List;
 
+import static ru.dhabits.fixchaos.notepad.util.Utils.setFolderToNotebooks;
+import static ru.dhabits.fixchaos.notepad.util.Utils.setNotebooksToNotes;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -30,19 +33,5 @@ public class FolderServiceImpl implements FolderService {
         setFolderToNotebooks(folder, folder.getNotebooks());
         setNotebooksToNotes(folder.getNotebooks());
         return folderMapper.mapToFolderDto(folderRepository.save(folder));
-    }
-
-    private void setFolderToNotebooks(Folder folder, List<Notebook> notebooks) {
-        notebooks.forEach(notebook -> notebook.setFolder(folder));
-    }
-
-    private void setNotebooksToNotes(List<Notebook> notebooks) {
-        for (Notebook notebook : notebooks) {
-            setNotebookToNotes(notebook, notebook.getNotes());
-        }
-    }
-
-    private void setNotebookToNotes(Notebook notebook, List<Note> notes) {
-        notes.forEach(note -> note.setNotebook(notebook));
     }
 }
