@@ -40,6 +40,8 @@ dependencies {
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiUiVersion}"
     implementation "org.liquibase:liquibase-core"
     implementation "org.openapitools:jackson-databind-nullable:${openApiToolsVersion}"
+    testImplementation "org.testcontainers:postgresql:${testcontainersPostgresqlVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersPostgresqlVersion}"
 }
 
 repositories {
@@ -49,3 +51,7 @@ repositories {
 bootJar {
     archiveFileName = "${project.name}.jar"
 }
+
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
+

@@ -1,0 +1,10 @@
+
+#Для использования in memory data base h2
+spring:
+  liquibase:
+    change-log: classpath:testdb/changelog/db.changelog-master.yaml
+  datasource:
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:fixchaos;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS notepad;

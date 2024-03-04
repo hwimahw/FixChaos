@@ -1,0 +1,7 @@
+spring:
+  liquibase:
+    change-log: classpath:integrationTestdb/changelog/db.changelog-master.yaml
+  datasource:
+    url: ${CONTAINER.URL}
+    username: ${CONTAINER.USERNAME}
+    password: ${CONTAINER.PASSWORD}

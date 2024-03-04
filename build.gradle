@@ -16,6 +16,9 @@ ext {
     openApiUiVersion = "2.0.2"
     openApiToolsVersion = "0.2.4"
     mapStructVersion = "1.5.3.Final"
+    testcontainersPostgresqlVersion = '1.17.6'
+    h2DataBaseVersion = '2.2.224'
+    junitVersion = '5.10.2'
 }
 
 subprojects { ->
@@ -38,15 +41,23 @@ subprojects { ->
         implementation "org.mapstruct:mapstruct:${mapStructVersion}"
         annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
         implementation "org.springframework.boot:spring-boot-starter-validation"
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testImplementation 'com.h2database:h2:2.2.224'
-
-
+        testImplementation "com.h2database:h2:${h2DataBaseVersion}"
+        testImplementation 'org.hamcrest:hamcrest:2.2'
     }
 
     test {
         useJUnitPlatform()
     }
-}
 
+    sourceSets {
+        integrationTest {
+            java.srcDir file("src/integrationTest/java")
+            resources.srcDir file("src/integrationTest/resources")
+            runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+            compileClasspath += sourceSets.main.compileClasspath + sourceSets.test.compileClasspath
+        }
+    }
+
+}

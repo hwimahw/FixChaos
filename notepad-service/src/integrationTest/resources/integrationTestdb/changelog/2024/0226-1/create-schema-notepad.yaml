@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20240226-1
+      author: Irzakhanov Mansur
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS notepad

@@ -27,7 +27,7 @@ public class FolderControllerTest {
     private FolderService folderService;
 
     @Autowired
-    private ObjectMapper om;
+    private ObjectMapper objectMapper;
 
     @Test
     public void createFolderTest() throws Exception {
@@ -45,7 +45,7 @@ public class FolderControllerTest {
         mockMvc.perform(post("/v1/folder")
                 .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsBytes(folderRequestDto)))
+                .content(objectMapper.writeValueAsBytes(folderRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("response"))
                 .andExpect(jsonPath("id").value(uuid.toString()));
