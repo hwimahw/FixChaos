@@ -13,6 +13,8 @@ import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
 import ru.dhabits.fixchaos.notepad.mapper.FolderMapper;
+import ru.dhabits.fixchaos.notepad.mapper.FolderMapperImpl;
+import ru.dhabits.fixchaos.notepad.service.impl.FolderServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = {FolderMapperImpl.class, FolderServiceImpl.class})
 public class FolderServiceTest {
     @MockBean
     private FolderRepository folderRepository;
@@ -52,17 +54,21 @@ public class FolderServiceTest {
         notebooks.add(notebook);
         folder.setNotebooks(notebooks);
 
-        when(folderRepository.existsByName(folderDto.getName())).thenReturn(false);
-        when(folderRepository.save(any())).thenReturn(folder);
+        {
+            when(folderRepository.existsByName(folderDto.getName())).thenReturn(false);
+            when(folderRepository.save(any())).thenReturn(folder);
+        }
 
         FolderDto folderDtoResponse = folderService.createFolder(folderDto);
 
-        Assertions.assertEquals(uuid.toString(), folderDtoResponse.getId().toString());
-        Assertions.assertEquals("request", folderDtoResponse.getName());
-        Assertions.assertEquals(1, folderDtoResponse.getNotebooks().size());
+        {
+            Assertions.assertEquals(uuid.toString(), folderDtoResponse.getId().toString());
+            Assertions.assertEquals("request", folderDtoResponse.getName());
+            Assertions.assertEquals(1, folderDtoResponse.getNotebooks().size());
 
-        NotebookDto notebookResponse = folderDtoResponse.getNotebooks().get(0);
-        Assertions.assertEquals(1, notebookResponse.getNotes().size());
+            NotebookDto notebookResponse = folderDtoResponse.getNotebooks().get(0);
+            Assertions.assertEquals(1, notebookResponse.getNotes().size());
+        }
     }
 
     @Test
@@ -71,10 +77,14 @@ public class FolderServiceTest {
         folderDto.setName("request");
         folderDto.setNotebooks(new ArrayList<>());
 
-        when(folderRepository.existsByName(folderDto.getName())).thenReturn(true);
+        {
+            when(folderRepository.existsByName(folderDto.getName())).thenReturn(true);
+        }
 
-        Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
-            folderService.createFolder(folderDto);
-        });
+        {
+            Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
+                folderService.createFolder(folderDto);
+            });
+        }
     }
 }

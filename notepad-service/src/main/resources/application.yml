@@ -9,3 +9,10 @@ spring:
     username: ${DB_USER:postgres_user}
     password: ${DB_PASSWORD:postgres_password}
     driver-class-name: org.postgresql.Driver
+
+#Для использования inmemory data base
+#  datasource:
+#    username: sa
+#    password: sa
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:usrmgmt;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;INIT=CREATE SCHEMA IF NOT EXISTS NOTEPAD;
