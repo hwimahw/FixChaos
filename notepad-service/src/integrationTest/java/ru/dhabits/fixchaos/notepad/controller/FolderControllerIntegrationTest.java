@@ -12,10 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
-import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
-import ru.dhabits.fixchaos.notepad.db.repository.NotebookRepository;
-import ru.dhabits.fixchaos.notepad.mapper.NotebookMapper;
-import ru.dhabits.fixchaos.notepad.service.FolderService;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,26 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FolderControllerIntegrationTest extends TestConfigHelper {
 
     @Autowired
-    private FolderService folderService;
-
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    private FolderRepository folderRepository;
-
-    @Autowired
-    private NotebookMapper notebookMapper;
-
-    @Autowired
-    private NotebookRepository notebookRepository;
-
     @Test
     void createFolderTest() throws Exception {
-
         UUID uuid = UUID.randomUUID();
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("response2");
