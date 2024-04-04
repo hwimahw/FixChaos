@@ -37,6 +37,6 @@ public class Notebook {
     @JoinColumn(name = "folder_id")
     private Folder folder;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "notebook")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "notebook")
     private List<Note> notes;
 }
