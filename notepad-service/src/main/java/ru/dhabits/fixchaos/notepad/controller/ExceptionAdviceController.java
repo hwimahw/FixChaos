@@ -14,7 +14,7 @@ import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistExcept
 @Slf4j
 public class ExceptionAdviceController {
 
-    @ExceptionHandler(EntityAlreadyExistsOrDoesNotExistException.class)
+    @ExceptionHandler(value = {EntityAlreadyExistsOrDoesNotExistException.class, RuntimeException.class})
     public ResponseEntity<ErrorResponseDto> handleException(EntityAlreadyExistsOrDoesNotExistException e) {
         log.error(e.getMessage(), e);
 

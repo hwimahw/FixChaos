@@ -18,6 +18,7 @@ import ru.dhabits.fixchaos.notepad.service.impl.FolderServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -84,6 +85,43 @@ public class FolderServiceTest {
         {
             Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
                 folderService.createFolder(folderDto);
+            });
+        }
+    }
+
+    @Test
+    public void testSuccessUpdateFolder() {
+        String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
+        String name = "newName";
+        Folder folder = new Folder();
+        folder.setName("oldName");
+        Optional<Folder> folderOptional = Optional.of(folder);
+
+        {
+            when(folderRepository.findById(any())).thenReturn(folderOptional);
+            when(folderRepository.save(any())).thenReturn(any());
+        }
+
+        folderService.updateFolder(id, name);
+
+        {
+            Assertions.assertEquals("newName", folder.getName());
+        }
+    }
+
+    @Test
+    public void testExceptionUpdateFolder() {
+        String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
+        String name = "newName";
+        Optional<Folder> folderOptional = Optional.empty();
+
+        {
+            when(folderRepository.findById(any())).thenReturn(folderOptional);
+        }
+
+        {
+            Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
+                folderService.updateFolder(id, name);
             });
         }
     }

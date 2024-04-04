@@ -14,6 +14,7 @@ import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -57,7 +58,32 @@ public class FolderServiceTest extends TestConfigHelper {
         Assertions.assertEquals(2, folderAnswer.getNotebooks().size());
         Assertions.assertEquals("notebookName1", folderAnswer.getNotebooks().get(0).getName());
         Assertions.assertEquals("notebookName2", folderAnswer.getNotebooks().get(1).getName());
+    }
 
+    @Test
+    public void testSuccessfulUpdateFolder() {
+        Folder folder = new Folder();
+        folder.setName("oldName");
+        folder = folderRepository.save(folder);
+
+        folderService.updateFolder(folder.getId().toString(), "newName");
+
+        Optional<Folder> folderOptionalAnswer = folderRepository.findById(folder.getId());
+        if (folderOptionalAnswer.isEmpty()) {
+            throw new EntityAlreadyExistsOrDoesNotExistException("There is no element in database");
+        }
+        Assertions.assertEquals("newName", folderOptionalAnswer.get().getName());
+    }
+
+    @Test
+    public void testExceptionUpdateFolder() {
+        Folder folder = new Folder();
+        folder.setName("oldName");
+        folderRepository.save(folder);
+
+        Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
+            folderService.updateFolder("7dcdc888-9cd9-418d-8ce2-988c68e86873", "newName");
+        });
     }
 
     @Test
@@ -72,6 +98,5 @@ public class FolderServiceTest extends TestConfigHelper {
         Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
             folderService.createFolder(folderDto);
         });
-
     }
 }

@@ -18,4 +18,10 @@ public class FolderController implements FolderApi {
     public ResponseEntity<FolderDto> createFolder(@Valid FolderDto folderDto) {
         return ResponseEntity.ok(folderService.createFolder(folderDto));
     }
+
+    @Override
+    public ResponseEntity<Void> updateFolder(String folderId, @Valid String folderName) {
+        folderService.updateFolder(folderId, folderName);
+        return ResponseEntity.ok().build();
+    }
 }
