@@ -15,6 +15,7 @@ import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistExcept
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -79,6 +80,7 @@ public class FolderServiceTest extends TestConfigHelper {
     public void testExceptionUpdateFolder() {
         Folder folder = new Folder();
         folder.setName("oldName");
+        folder.setId(UUID.fromString("7dcdc888-9cd9-418d-8ce2-988c68e86874"));
         folderRepository.save(folder);
 
         Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
