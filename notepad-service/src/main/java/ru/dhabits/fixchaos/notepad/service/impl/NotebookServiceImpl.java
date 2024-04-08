@@ -11,9 +11,9 @@ import ru.dhabits.fixchaos.notepad.db.repository.NotebookRepository;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
 import ru.dhabits.fixchaos.notepad.mapper.NotebookMapper;
 import ru.dhabits.fixchaos.notepad.service.NotebookService;
-import ru.dhabits.fixchaos.notepad.util.Utils;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static ru.dhabits.fixchaos.notepad.util.Utils.setNotebookToNotes;
 
@@ -37,5 +37,19 @@ public class NotebookServiceImpl implements NotebookService {
         setNotebookToNotes(notebook, notebook.getNotes());
         notebook.setFolder(folder);
         return notebookMapper.mapToNotebookDto(notebookRepository.save(notebook));
+    }
+
+    @Override
+    public void updateNotebook(String id, String name) {
+        if (name == null) {
+            return;
+        }
+        Optional<Notebook> notebookOptional = notebookRepository.findById(UUID.fromString(id));
+        notebookOptional.ifPresentOrElse(notebook -> {
+            notebook.setName(name);
+            notebookRepository.save(notebook);
+        }, () -> {
+            throw new EntityAlreadyExistsOrDoesNotExistException();
+        });
     }
 }

@@ -57,7 +57,23 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void UpdateFolderTest() throws Exception {
+    public void testCreateFolderException() throws Exception {
+        FolderDto folderRequestDto = new FolderDto();
+
+        {
+            doThrow(new EntityAlreadyExistsOrDoesNotExistException()).when(folderService).createFolder(folderRequestDto);
+        }
+
+        mockMvc.perform(post("/v1/folder")
+                .header("Authorization", "Bearer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(folderRequestDto)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+    }
+
+    @Test
+    public void updateFolderTest() throws Exception {
         String id = "10";
         String name = "newName";
 
@@ -71,7 +87,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void UpdateFolderTestException() throws Exception {
+    public void updateFolderTestException() throws Exception {
         String id = "10";
         String name = "newName";
 
@@ -81,6 +97,7 @@ public class FolderControllerTest {
 
         mockMvc.perform(put("/v1/folder/{id}", id)
                 .queryParam("name", name))
+                .andExpect(status().is4xxClientError())
                 .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof RuntimeException));
     }
 }

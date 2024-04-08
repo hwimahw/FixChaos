@@ -162,6 +162,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
+
+  /v1/notebook/{id}:
+    put:
+      operationId: updateNotebook
+      summary: Update notebook
+      tags:
+        - Notebook
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: String
+            format: uuid
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: String
+      responses:
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
   /v1/note:
     post:
       operationId: createNote
@@ -181,6 +233,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NoteDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+  /v1/note/{id}:
+    post:
+      operationId: updateNote
+      summary: Update note
+      tags:
+        - Note
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: String
+            format: uuid
+        - in: query
+          name: name
+          required: false
+          schema:
+            type: String
+      responses:
         '400':
           description: Invalid request
           content:

@@ -18,4 +18,10 @@ public class NoteController implements NoteApi {
     public ResponseEntity<NoteDto> createNote(@Valid NoteDto noteDto) {
         return ResponseEntity.ok(noteService.createNote(noteDto));
     }
+
+    @Override
+    public ResponseEntity<Void> updateNote(String id, @Valid String name) {
+        noteService.updateNote(id, name);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -13,6 +13,7 @@ import ru.dhabits.fixchaos.notepad.mapper.NoteMapper;
 import ru.dhabits.fixchaos.notepad.service.NoteService;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +33,17 @@ public class NoteServiceImpl implements NoteService {
         Note note = noteMapper.mapToNote(noteDto);
         note.setNotebook(notebook);
         return noteMapper.mapToNoteDto(noteRepository.save(note));
+    }
+
+    @Override
+    public void updateNote(String id, String name) {
+        if(name == null) {
+            return;
+        }
+        noteRepository.findById(UUID.fromString(id)).ifPresentOrElse(
+                note -> note.setName(name),
+                () -> {
+                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                });
     }
 }

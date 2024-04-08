@@ -38,6 +38,9 @@ public class FolderServiceImpl implements FolderService {
 
     @Override
     public void updateFolder(String folderId, String name) {
+        if (name == null) {
+            return;
+        }
         Optional<Folder> folderOptional = folderRepository.findById(UUID.fromString(folderId));
         folderOptional.ifPresentOrElse(folder -> {
             folder.setName(name);

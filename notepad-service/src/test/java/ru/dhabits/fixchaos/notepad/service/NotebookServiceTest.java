@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {NotebookServiceImpl.class, NotebookMapperImpl.class})
 public class NotebookServiceTest {
@@ -101,6 +102,43 @@ public class NotebookServiceTest {
                     () -> {
                         notebookService.createNotebook(notebookDto);
                     });
+        }
+    }
+
+    @Test
+    public void testSuccessUpdateNotebook() {
+        String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
+        String name = "newName";
+        Notebook notebook = new Notebook();
+        notebook.setName("oldName");
+        Optional<Notebook> notebookOptional = Optional.of(notebook);
+
+        {
+            when(notebookRepository.findById(any())).thenReturn(notebookOptional);
+            when(notebookRepository.save(any())).thenReturn(any());
+        }
+
+        notebookService.updateNotebook(id, name);
+
+        {
+            Assertions.assertEquals("newName", notebook.getName());
+        }
+    }
+
+    @Test
+    public void testExceptionUpdateNotebook() {
+        String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
+        String name = "newName";
+        Optional<Notebook> notebookOptional = Optional.empty();
+
+        {
+            when(notebookRepository.findById(any())).thenReturn(notebookOptional);
+        }
+
+        {
+            Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
+                notebookService.updateNotebook(id, name);
+            });
         }
     }
 }

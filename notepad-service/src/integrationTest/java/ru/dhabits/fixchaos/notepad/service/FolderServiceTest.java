@@ -62,6 +62,20 @@ public class FolderServiceTest extends TestConfigHelper {
     }
 
     @Test
+    public void testExceptionCreateFolder() {
+        Folder folder = new Folder();
+        folder.setName("folderName");
+        folderRepository.save(folder);
+
+        FolderDto folderDto = new FolderDto();
+        folderDto.setName("folderName");
+
+        Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
+            folderService.createFolder(folderDto);
+        });
+    }
+
+    @Test
     public void testSuccessfulUpdateFolder() {
         Folder folder = new Folder();
         folder.setName("oldName");
@@ -85,20 +99,6 @@ public class FolderServiceTest extends TestConfigHelper {
 
         Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
             folderService.updateFolder("7dcdc888-9cd9-418d-8ce2-988c68e86873", "newName");
-        });
-    }
-
-    @Test
-    public void testExceptionCreateFolder() {
-        Folder folder = new Folder();
-        folder.setName("folderName");
-        folderRepository.save(folder);
-
-        FolderDto folderDto = new FolderDto();
-        folderDto.setName("folderName");
-
-        Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
-            folderService.createFolder(folderDto);
         });
     }
 }
