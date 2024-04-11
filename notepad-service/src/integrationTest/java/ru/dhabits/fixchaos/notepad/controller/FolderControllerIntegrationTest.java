@@ -4,6 +4,7 @@ import com.dhabits.code.fixchaos.notepad.dto.FolderDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
     @Autowired
     private FolderRepository folderRepository;
+
+    @AfterEach
+    public void setup() {
+        folderRepository.deleteAll();
+    }
 
     @Test
     void createFolderTest() throws Exception {

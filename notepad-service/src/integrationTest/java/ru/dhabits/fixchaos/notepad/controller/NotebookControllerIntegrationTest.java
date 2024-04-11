@@ -5,6 +5,7 @@ import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
+import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
+import ru.dhabits.fixchaos.notepad.db.repository.NoteRepository;
 import ru.dhabits.fixchaos.notepad.db.repository.NotebookRepository;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
 import ru.dhabits.fixchaos.notepad.service.FolderService;
@@ -48,10 +51,23 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
     private NotebookRepository notebookRepository;
 
     @Autowired
+    private NoteRepository noteRepository;
+
+    @Autowired
+    private FolderRepository folderRepository;
+
+    @Autowired
     private FolderService folderService;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @AfterEach
+    public void setup() {
+        noteRepository.deleteAll();
+        notebookRepository.deleteAll();
+        folderRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("Успешное создание объекта Notebook")

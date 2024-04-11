@@ -37,11 +37,14 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void updateNote(String id, String name) {
-        if(name == null) {
+        if (name == null) {
             return;
         }
         noteRepository.findById(UUID.fromString(id)).ifPresentOrElse(
-                note -> note.setName(name),
+                note -> {
+                    note.setName(name);
+                    noteRepository.save(note);
+                },
                 () -> {
                     throw new EntityAlreadyExistsOrDoesNotExistException();
                 });

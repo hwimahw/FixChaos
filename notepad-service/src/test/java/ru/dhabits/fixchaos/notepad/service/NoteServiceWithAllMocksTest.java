@@ -93,4 +93,36 @@ public class NoteServiceWithAllMocksTest {
                     });
         }
     }
+
+    @Test
+    public void updateNote_SuccessfulUpdating() {
+        String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
+        String name = "newName";
+        Note note = new Note();
+        note.setName("oldName");
+        Optional<Note> optionalNote = Optional.of(note);
+        {
+            Mockito.when(noteRepository.findById(any())).thenReturn(optionalNote);
+        }
+
+        noteService.updateNote(id, name);
+
+        Assertions.assertEquals("newName", note.getName());
+
+    }
+
+    @Test
+    public void updateNote_NoteThatDoesNotExist_ThrowsException() {
+        String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
+        String name = "newName";
+
+        {
+            Mockito.doThrow(new EntityAlreadyExistsOrDoesNotExistException()).when(noteRepository).findById(any());
+        }
+
+        Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
+                    noteService.updateNote(id, name);
+                }
+        );
+    }
 }

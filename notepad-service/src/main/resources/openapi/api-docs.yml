@@ -265,7 +265,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
   /v1/note/{id}:
-    post:
+    put:
       operationId: updateNote
       summary: Update note
       tags:
