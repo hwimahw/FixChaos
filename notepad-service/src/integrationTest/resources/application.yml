@@ -9,3 +9,6 @@ spring:
     url: ${CONTAINER.URL}
     username: ${CONTAINER.USERNAME}
     password: ${CONTAINER.PASSWORD}
+  security:
+    user:
+      password: password

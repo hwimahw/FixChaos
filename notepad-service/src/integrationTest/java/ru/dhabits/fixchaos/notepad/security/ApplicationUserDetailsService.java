@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.notepad.service.security;
+package ru.dhabits.fixchaos.notepad.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

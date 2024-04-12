@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.notepad.config;
+package ru.dhabits.fixchaos.notepad.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

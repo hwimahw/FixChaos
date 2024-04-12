@@ -74,7 +74,6 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
     }
 
     @Test
-    @WithMockUser
     public void createNote_SuccessfulNoteCreating() throws Exception {
         //given
         FolderDto folderRequestDto = new FolderDto();
@@ -92,7 +91,7 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
 
         //when
         mockMvc.perform(post("/v1/note").with(SecurityMockMvcRequestPostProcessors.httpBasic("user", "password"))
-                        .header("Authorization", "Bearer")
+//                        .header("Authorization", "Bearer")
                         //then
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(noteDto)))
@@ -119,7 +118,6 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
 
         //when
         mockMvc.perform(post("/v1/note")
-                        .header("Authorization", "Bearer")
                         //then
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(noteDto)))

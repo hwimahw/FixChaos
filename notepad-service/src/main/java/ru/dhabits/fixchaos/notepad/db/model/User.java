@@ -1,8 +1,10 @@
 package ru.dhabits.fixchaos.notepad.db.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,23 +13,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
+@Table(name = "user", schema = "notepad")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    private final UUID id;
+    private UUID id;
 
     @Column(name = "userName")
-    private final String userName;
+    private String userName;
 
     @Column(name = "password")
-    private final String password;
-
-    public User(UUID id, String userName, String password) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
-    }
+    private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
