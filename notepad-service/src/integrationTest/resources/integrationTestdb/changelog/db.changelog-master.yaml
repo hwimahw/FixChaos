@@ -11,4 +11,7 @@ databaseChangeLog:
   - include:
       file: /2024/0226-1/create-note-table.yaml
       relativeToChangelogFile: true
+  - include:
+      file: /2024/0412-1/create-user-test-table.yaml
+      relativeToChangelogFile: true
 

@@ -19,6 +19,9 @@ ext {
     testcontainersPostgresqlVersion = '1.17.6'
     h2DataBaseVersion = '2.2.224'
     junitVersion = '5.10.2'
+    securityVersion = '3.2.4'
+    securityTestVersion = '6.2.3'
+    hamcrestVersion = '2.2'
 }
 
 subprojects { ->
@@ -44,7 +47,10 @@ subprojects { ->
         testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation "com.h2database:h2:${h2DataBaseVersion}"
-        testImplementation 'org.hamcrest:hamcrest:2.2'
+        testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+        implementation "org.springframework.boot:spring-boot-starter-security:${securityVersion}"
+        testImplementation "org.springframework.security:spring-security-test:${securityTestVersion}"
+
     }
 
     test {
