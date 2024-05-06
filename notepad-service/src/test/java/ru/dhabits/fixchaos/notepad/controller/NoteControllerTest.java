@@ -8,18 +8,24 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
+import ru.dhabits.fixchaos.notepad.security.SecurityConfig;
 import ru.dhabits.fixchaos.notepad.service.NoteService;
 
 import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(NoteController.class)
+@Import(SecurityConfig.class)
 public class NoteControllerTest {
 
     @Autowired
@@ -32,7 +38,7 @@ public class NoteControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void createNote() throws Exception {
+    public void createNote_SuccessfulCreating() throws Exception {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteName");
 
@@ -54,7 +60,7 @@ public class NoteControllerTest {
     }
 
     @Test
-    public void testExceptionCreateNote() throws Exception {
+    public void createNote_ThatAlreadyExists_ThrowsException() throws Exception {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteName");
 
@@ -72,5 +78,37 @@ public class NoteControllerTest {
                 .andExpect(status().is4xxClientError())
                 .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
 
+    }
+
+    @Test
+    public void updateNote_SuccessfulUpdating() throws Exception {
+        String id = "id";
+        String name = "name";
+
+        {
+            Mockito.doNothing().when(noteService).updateNote(id, name);
+        }
+
+        mockMvc.perform(put("/v1/note/{id}", id)
+                .queryParam("name", name)
+                .header("Authorization", "Bearer")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateNote_ThatDoesNotExist_ThrowsException() throws Exception {
+        String id = "id";
+        String name = "name";
+
+        {
+            doThrow(new EntityAlreadyExistsOrDoesNotExistException()).when(noteService).updateNote(id, name);
+        }
+
+        mockMvc.perform(put("/v1/note/{id}", id)
+                .queryParam("name", name)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
     }
 }

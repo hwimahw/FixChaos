@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
+import ru.dhabits.fixchaos.notepad.security.SecurityConfig;
 import ru.dhabits.fixchaos.notepad.service.FolderService;
 
 import java.util.UUID;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FolderController.class)
+@Import(SecurityConfig.class)
 public class FolderControllerTest {
 
     @Autowired
@@ -35,7 +38,7 @@ public class FolderControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void createFolderTest() throws Exception {
+    public void createFolder_SuccessfulCreating() throws Exception {
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("request");
 
@@ -47,8 +50,8 @@ public class FolderControllerTest {
         {
             when(folderService.createFolder(folderRequestDto)).thenReturn(folderAnswerDto);
         }
+
         mockMvc.perform(post("/v1/folder")
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(folderRequestDto)))
                 .andExpect(status().isOk())
@@ -57,7 +60,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void testCreateFolderException() throws Exception {
+    public void createFolder_ThatAlreadyExists_ThrowsException() throws Exception {
         FolderDto folderRequestDto = new FolderDto();
 
         {
@@ -65,7 +68,6 @@ public class FolderControllerTest {
         }
 
         mockMvc.perform(post("/v1/folder")
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(folderRequestDto)))
                 .andExpect(status().is4xxClientError())
@@ -73,7 +75,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void updateFolderTest() throws Exception {
+    public void updateFolder_SuccessfulUpdating() throws Exception {
         String id = "10";
         String name = "newName";
 
@@ -87,7 +89,7 @@ public class FolderControllerTest {
     }
 
     @Test
-    public void updateFolderTestException() throws Exception {
+    public void updateFolder_ThatDoesNotExist_ThrowsException() throws Exception {
         String id = "10";
         String name = "newName";
 
