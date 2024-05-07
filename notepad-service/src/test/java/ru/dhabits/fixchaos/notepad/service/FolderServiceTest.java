@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {FolderMapperImpl.class, FolderServiceImpl.class})
@@ -36,7 +37,7 @@ public class FolderServiceTest {
     private FolderMapper folderMapper;
 
     @Test
-    public void testSuccessCreateFolder() {
+    public void createFolder_SuccessfulCheck() {
         FolderDto folderDto = new FolderDto();
         folderDto.setName("request");
         folderDto.setNotebooks(new ArrayList<>());
@@ -65,6 +66,8 @@ public class FolderServiceTest {
         {
             Assertions.assertEquals(uuid.toString(), folderDtoResponse.getId().toString());
             Assertions.assertEquals("request", folderDtoResponse.getName());
+
+            Assertions.assertNotNull(folderDtoResponse.getNotebooks());
             Assertions.assertEquals(1, folderDtoResponse.getNotebooks().size());
 
             NotebookDto notebookResponse = folderDtoResponse.getNotebooks().get(0);
@@ -73,10 +76,9 @@ public class FolderServiceTest {
     }
 
     @Test
-    public void testExceptionCreateFolder() {
+    public void createFolder_ThatAlreadyExists_ThrowsException() {
         FolderDto folderDto = new FolderDto();
         folderDto.setName("request");
-        folderDto.setNotebooks(new ArrayList<>());
 
         {
             when(folderRepository.existsByName(folderDto.getName())).thenReturn(true);
@@ -90,7 +92,7 @@ public class FolderServiceTest {
     }
 
     @Test
-    public void testSuccessUpdateFolder() {
+    public void updateFolder_SuccessfulUpdating() {
         String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
         String name = "newName";
         Folder folder = new Folder();
@@ -99,7 +101,7 @@ public class FolderServiceTest {
 
         {
             when(folderRepository.findById(any())).thenReturn(folderOptional);
-            when(folderRepository.save(any())).thenReturn(any());
+            when(folderRepository.save(any())).thenReturn(folder);
         }
 
         folderService.updateFolder(id, name);
@@ -110,7 +112,7 @@ public class FolderServiceTest {
     }
 
     @Test
-    public void testExceptionUpdateFolder() {
+    public void updateFolder_ThatDoesNotExist_ThrowsException() {
         String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
         String name = "newName";
         Optional<Folder> folderOptional = Optional.empty();

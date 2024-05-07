@@ -50,7 +50,6 @@ public class NoteControllerTest {
         }
 
         mockMvc.perform(post("/v1/note")
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(noteDto)))
                 .andExpect(status().isOk())
@@ -72,7 +71,6 @@ public class NoteControllerTest {
         }
 
         mockMvc.perform(post("/v1/note")
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(noteDto)))
                 .andExpect(status().is4xxClientError())
@@ -91,7 +89,6 @@ public class NoteControllerTest {
 
         mockMvc.perform(put("/v1/note/{id}", id)
                 .queryParam("name", name)
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

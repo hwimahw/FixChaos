@@ -29,12 +29,12 @@ public class FolderRepositoryTest extends TestProfile {
     }
 
     @Test
-    public void existsByNameTest() {
+    public void existsByName_SuccessfulCheck() {
         Assertions.assertEquals(true, folderRepository.existsByName("folder1"));
     }
 
     @Test
-    public void doesNotExistByNameTest() {
+    public void doesNotExistByName_SuccessfulCheck() {
         Assertions.assertEquals(false, folderRepository.existsByName("folder2"));
     }
 
