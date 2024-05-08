@@ -50,7 +50,7 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
     }
 
     @Test
-    void createFolderTest() throws Exception {
+    void createFolder_SuccessfulCreating() throws Exception {
         UUID uuid = UUID.randomUUID();
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("response2");
@@ -65,7 +65,6 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
         folderRequestDto.setNotebooks(List.of(notebookDto1, notebookDto2));
 
         mockMvc.perform(post("/v1/folder")
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(folderRequestDto)))
                 .andExpect(status().isOk())
@@ -77,7 +76,7 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
     }
 
     @Test
-    void testExceptionCreateFolder() throws Exception {
+    void createFolder_ThatAlreadyExists_ThrowsException() throws Exception {
         UUID uuid = UUID.randomUUID();
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("response2");
@@ -94,7 +93,6 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
 
         mockMvc.perform(post("/v1/folder")
-                .header("Authorization", "Bearer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(folderRequestDto)))
                 .andExpect(status().is4xxClientError())
@@ -102,7 +100,7 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
     }
 
     @Test
-    void testSuccessfulUpdateFolder() throws Exception {
+    void updateFolder_SuccessfulUpdating() throws Exception {
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("oldName");
 
@@ -121,7 +119,7 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
     }
 
     @Test
-    void testExceptionUpdateFolder() throws Exception {
+    void updateFolder_ThatDoesNotExist_ThrowsException() throws Exception {
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("oldName");
 
@@ -137,7 +135,7 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
 
     @Test
-    void deleteFolder_SuccessfulDeletingOfFolder() throws Exception{
+    void deleteFolder_SuccessfulDeleting() throws Exception{
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("newName");
 

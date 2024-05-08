@@ -89,7 +89,6 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
 
         //when
         mockMvc.perform(post("/v1/notebook")
-                .header("Authorization", "Bearer")
         //then
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(notebookDto)))
