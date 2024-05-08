@@ -6,4 +6,6 @@ public interface FolderService {
     FolderDto createFolder(FolderDto folderDto);
 
     void updateFolder(String folderId, String folderName);
+
+    void deleteFolder(String folderId);
 }

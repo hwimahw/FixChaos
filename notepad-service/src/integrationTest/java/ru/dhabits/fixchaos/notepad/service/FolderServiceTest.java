@@ -3,6 +3,7 @@ package ru.dhabits.fixchaos.notepad.service;
 import com.dhabits.code.fixchaos.notepad.dto.FolderDto;
 import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,13 @@ public class FolderServiceTest extends TestConfigHelper {
     @Autowired
     private FolderRepository folderRepository;
 
+    @AfterEach
+    public void setup() {
+        folderRepository.deleteAll();
+    }
+
     @Test
-    public void testSuccessfulCreateFolder() {
+    public void createFolder_SuccessfulCheck() {
         FolderDto folderDto = new FolderDto();
         folderDto.setName("folderName");
 
@@ -62,7 +68,7 @@ public class FolderServiceTest extends TestConfigHelper {
     }
 
     @Test
-    public void testExceptionCreateFolder() {
+    public void createFolder_ThatAlreadyExists_ThrowsException() {
         Folder folder = new Folder();
         folder.setName("folderName");
         folderRepository.save(folder);
@@ -76,7 +82,7 @@ public class FolderServiceTest extends TestConfigHelper {
     }
 
     @Test
-    public void testSuccessfulUpdateFolder() {
+    public void updateFolder_SuccessfulUpdating() {
         Folder folder = new Folder();
         folder.setName("oldName");
         folder = folderRepository.save(folder);
@@ -84,17 +90,14 @@ public class FolderServiceTest extends TestConfigHelper {
         folderService.updateFolder(folder.getId().toString(), "newName");
 
         Optional<Folder> folderOptionalAnswer = folderRepository.findById(folder.getId());
-        if (folderOptionalAnswer.isEmpty()) {
-            throw new EntityAlreadyExistsOrDoesNotExistException("There is no element in database");
-        }
+        Assertions.assertTrue(folderOptionalAnswer.isPresent());
         Assertions.assertEquals("newName", folderOptionalAnswer.get().getName());
     }
 
     @Test
-    public void testExceptionUpdateFolder() {
+    public void updateFolder_ThatDoesNotExist_ThrowsException() {
         Folder folder = new Folder();
         folder.setName("oldName");
-        folder.setId(UUID.fromString("7dcdc888-9cd9-418d-8ce2-988c68e86874"));
         folderRepository.save(folder);
 
         Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {

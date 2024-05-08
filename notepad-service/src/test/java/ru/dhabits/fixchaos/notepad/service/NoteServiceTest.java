@@ -37,7 +37,7 @@ public class NoteServiceTest {
     private NotebookRepository notebookRepository;
 
     @Test
-    public void testSuccessfulCreateNote() {
+    public void createNote_SuccessfulCreating() {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteDtoName");
         UUID notebookId = UUID.randomUUID();
@@ -67,7 +67,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void testExceptionCreateNote() {
+    public void createNote_NotebookOfWhichDoesNotExist_ThrowsException() {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteDtoName");
         UUID notebookId = UUID.randomUUID();

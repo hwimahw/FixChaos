@@ -60,7 +60,7 @@ public class NotebookControllerTest {
     }
 
     @Test
-    void createNotebook_ThatAlreadyExists_ThrowsException() throws Exception {
+    void createNotebook_FolderOfWhichDoesNotExist_ThrowsException() throws Exception {
         NotebookDto notebookRequestDto = new NotebookDto();
         notebookRequestDto.setName("notebookName");
 

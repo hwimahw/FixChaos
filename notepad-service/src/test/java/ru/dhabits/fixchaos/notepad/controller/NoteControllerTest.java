@@ -59,7 +59,7 @@ public class NoteControllerTest {
     }
 
     @Test
-    public void createNote_ThatAlreadyExists_ThrowsException() throws Exception {
+    public void createNote_NotebookOfWhichDoesNotExist_ThrowsException() throws Exception {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteName");
 

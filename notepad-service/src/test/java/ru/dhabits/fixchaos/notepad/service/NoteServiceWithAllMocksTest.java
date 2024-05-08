@@ -41,7 +41,7 @@ public class NoteServiceWithAllMocksTest {
     private NoteServiceImpl noteService;
 
     @Test
-    public void testSuccessfulCreateNote() {
+    public void createNote_SuccessfulCreating() {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteDtoName");
         UUID notebookId = UUID.randomUUID();
@@ -60,7 +60,7 @@ public class NoteServiceWithAllMocksTest {
 
         {
             Mockito.when(notebookRepository.findById(notebookId)).thenReturn(optionalNotebook);
-            Mockito.when(noteRepository.save(any())).thenReturn(note);
+            Mockito.when(noteRepository.save(note)).thenReturn(note);
             Mockito.when(noteMapper.mapToNote(noteDto)).thenReturn(note);
             Mockito.when(noteMapper.mapToNoteDto(note)).thenReturn(noteDto);
         }
@@ -74,7 +74,7 @@ public class NoteServiceWithAllMocksTest {
     }
 
     @Test
-    public void testExceptionCreateNote() {
+    public void createNote_NotebookOfWhichDoesNotExist_ThrowsException() {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteDtoName");
         UUID notebookId = UUID.randomUUID();

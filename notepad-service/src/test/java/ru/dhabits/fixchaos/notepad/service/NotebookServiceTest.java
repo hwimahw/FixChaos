@@ -41,7 +41,7 @@ public class NotebookServiceTest {
     private NotebookRepository notebookRepository;
 
     @Test
-    public void testSuccessCreateNotebook() {
+    public void createNotebook_SuccessfulCreating() {
         NotebookDto notebookDto = new NotebookDto();
         notebookDto.setName("name");
         NoteDto note1 = new NoteDto();
@@ -79,7 +79,7 @@ public class NotebookServiceTest {
     }
 
     @Test
-    public void testExceptionCreateNotebook() {
+    public void createNotebook_FolderOfWhichDoesNotExist_ThrowsException() {
         NotebookDto notebookDto = new NotebookDto();
         notebookDto.setName("name");
         NoteDto note1 = new NoteDto();
@@ -106,7 +106,7 @@ public class NotebookServiceTest {
     }
 
     @Test
-    public void testSuccessUpdateNotebook() {
+    public void updateNotebook_SuccessfulUpdating() {
         String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
         String name = "newName";
         Notebook notebook = new Notebook();
@@ -115,7 +115,7 @@ public class NotebookServiceTest {
 
         {
             when(notebookRepository.findById(any())).thenReturn(notebookOptional);
-            when(notebookRepository.save(any())).thenReturn(any());
+            when(notebookRepository.save(notebook)).thenReturn(notebook);
         }
 
         notebookService.updateNotebook(id, name);
@@ -126,7 +126,7 @@ public class NotebookServiceTest {
     }
 
     @Test
-    public void testExceptionUpdateNotebook() {
+    public void updateNotebook_ThatDoesNotExist_ThrowsException() {
         String id = "7dcdc888-9cd9-418d-8ce2-988c68e86873";
         String name = "newName";
         Optional<Notebook> notebookOptional = Optional.empty();

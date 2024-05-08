@@ -3,7 +3,7 @@ info:
   title: LifePlanner Service - OpenAPI 1.0
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/api/customer
+  - url: http://localhost:8080/api/notepad
 tags:
   - name: Folder
     description: Folder API
@@ -111,6 +111,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
+
+    delete:
+      operationId: deleteFolder
+      summary: Delete folder
+      tags:
+        - Folder
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: String
+            format: uuid
+      responses:
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
 
   /v1/notebook:
     post:

@@ -4,6 +4,7 @@ import com.dhabits.code.fixchaos.notepad.controller.FolderApi;
 import com.dhabits.code.fixchaos.notepad.dto.FolderDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import ru.dhabits.fixchaos.notepad.service.FolderService;
@@ -17,6 +18,12 @@ public class FolderController implements FolderApi {
     @Override
     public ResponseEntity<FolderDto> createFolder(@Valid FolderDto folderDto) {
         return ResponseEntity.ok(folderService.createFolder(folderDto));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteFolder(String id) {
+        folderService.deleteFolder(id);
+        return ResponseEntity.status(204).build();
     }
 
     @Override

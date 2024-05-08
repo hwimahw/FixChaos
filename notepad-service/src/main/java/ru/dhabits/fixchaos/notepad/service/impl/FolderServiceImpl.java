@@ -49,4 +49,12 @@ public class FolderServiceImpl implements FolderService {
             throw new EntityAlreadyExistsOrDoesNotExistException();
         });
     }
+
+    @Override
+    public void deleteFolder(String folderId) {
+        Optional<Folder> folderOptional = folderRepository.findById(UUID.fromString(folderId));
+        folderOptional.ifPresentOrElse(folderRepository::delete, () -> {
+            throw new EntityAlreadyExistsOrDoesNotExistException();
+        });
+    }
 }

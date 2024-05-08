@@ -29,7 +29,7 @@ public class NoteServiceTest extends TestConfigHelper {
     private FolderRepository folderRepository;
 
     @Test
-    public void testSuccessfulCreateNote() {
+    public void createNote_SuccessfulCreating() {
         Folder folder = new Folder();
         folder.setName("folderName");
         folder = folderRepository.save(folder);
@@ -51,7 +51,7 @@ public class NoteServiceTest extends TestConfigHelper {
     }
 
     @Test
-    public void testExceptionCreateNote() {
+    public void createNote_NotebookOfWhichDoesNotExist_ThrowsException() {
         Folder folder = new Folder();
         folder.setName("folderName");
         folder = folderRepository.save(folder);

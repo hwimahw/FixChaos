@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -136,4 +135,35 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
                 .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
     }
 
+
+    @Test
+    void deleteFolder_SuccessfulDeletingOfFolder() throws Exception{
+        FolderDto folderRequestDto = new FolderDto();
+        folderRequestDto.setName("newName");
+
+        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+
+
+        mockMvc.perform(delete("/v1/folder/{id}", UUID.fromString(folderDtoResponse.getId().toString()))
+                        .header("Authorization", "Bearer"))
+                .andExpect(status().is2xxSuccessful());
+
+        Optional<Folder> optionalFolder = folderRepository.findById(folderDtoResponse.getId());
+        Assertions.assertTrue(optionalFolder.isEmpty());
+    }
+
+    @Test
+    void deleteFolder_ThatDoesNotExist_ThrowsException() throws Exception{
+        FolderDto folderRequestDto = new FolderDto();
+        folderRequestDto.setName("newName");
+
+        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+
+
+        mockMvc.perform(delete("/v1/folder/{id}", UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87"))
+                        .header("Authorization", "Bearer"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+
+    }
 }

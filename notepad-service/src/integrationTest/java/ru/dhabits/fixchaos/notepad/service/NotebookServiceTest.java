@@ -26,7 +26,7 @@ public class NotebookServiceTest extends TestConfigHelper {
     private FolderRepository folderRepository;
 
     @Test
-    public void testSuccessfulCreateNotebook() {
+    public void createNotebook_SuccessfulCreating() {
         Folder folder = new Folder();
         folder.setName("folderName");
         folder = folderRepository.save(folder);
@@ -51,10 +51,10 @@ public class NotebookServiceTest extends TestConfigHelper {
     }
 
     @Test
-    public void testExceptionCreateNotebook() {
+    public void createNotebook_FolderOfWhichDoesNotExist_ThrowsException() {
         Folder folder = new Folder();
         folder.setName("folderName");
-        folder = folderRepository.save(folder);
+        folderRepository.save(folder);
 
         NotebookDto notebookDto = new NotebookDto();
         notebookDto.setFolderId(UUID.randomUUID());
