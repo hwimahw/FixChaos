@@ -1,6 +1,7 @@
 package ru.dhabits.fixchaos.notepad.service.impl;
 
 import com.dhabits.code.fixchaos.notepad.dto.FolderDto;
+import com.dhabits.code.fixchaos.notepad.dto.ListFolderDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistExcept
 import ru.dhabits.fixchaos.notepad.mapper.FolderMapper;
 import ru.dhabits.fixchaos.notepad.service.FolderService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,5 +58,11 @@ public class FolderServiceImpl implements FolderService {
         folderOptional.ifPresentOrElse(folderRepository::delete, () -> {
             throw new EntityAlreadyExistsOrDoesNotExistException();
         });
+    }
+
+    @Override
+    public ListFolderDto getAllFolders() {
+        List<Folder> folders = folderRepository.findAll();
+        return new ListFolderDto().folders(folderMapper.mapToFolderDtoList(folders));
     }
 }

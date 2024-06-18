@@ -42,6 +42,7 @@ dependencies {
     implementation "org.openapitools:jackson-databind-nullable:${openApiToolsVersion}"
     testImplementation "org.testcontainers:postgresql:${testcontainersPostgresqlVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersPostgresqlVersion}"
+    testImplementation "org.assertj:assertj-core:${assertJVersion}"
 }
 
 repositories {

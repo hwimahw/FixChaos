@@ -62,6 +62,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
+    get:
+      operationId: getAllFolders
+      summary: Get all folders
+      tags:
+        - Folder
+      responses:
+        '200':
+          description: Folders are gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFolderDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
   /v1/folder/{id}:
     put:
       operationId: updateFolder
@@ -373,6 +417,14 @@ components:
         traceId:
           type: string
           description: Trace Id
+
+    ListFolderDto:
+      type: object
+      properties:
+        folders:
+          type: array
+          items:
+            $ref: '#/components/schemas/FolderDto'
 
     FolderDto:
       type: object
