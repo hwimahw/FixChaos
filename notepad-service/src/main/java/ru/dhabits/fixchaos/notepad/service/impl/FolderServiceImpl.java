@@ -12,8 +12,6 @@ import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistExcept
 import ru.dhabits.fixchaos.notepad.mapper.FolderMapper;
 import ru.dhabits.fixchaos.notepad.service.FolderService;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static ru.dhabits.fixchaos.notepad.util.Utils.setFolderToNotebooks;
@@ -30,7 +28,9 @@ public class FolderServiceImpl implements FolderService {
     @Transactional
     public FolderDto createFolder(FolderDto folderDto) {
         if (folderRepository.existsByName(folderDto.getName())) {
-            throw new EntityAlreadyExistsOrDoesNotExistException("Folder with name " + folderDto.getName() + " already exists");
+            throw new EntityAlreadyExistsOrDoesNotExistException(
+                    "Folder with name " + folderDto.getName() + " already exists"
+            );
         }
         Folder folder = folderMapper.mapToFolder(folderDto);
         setFolderToNotebooks(folder, folder.getNotebooks());
@@ -43,26 +43,29 @@ public class FolderServiceImpl implements FolderService {
         if (name == null) {
             return;
         }
-        Optional<Folder> folderOptional = folderRepository.findById(UUID.fromString(folderId));
-        folderOptional.ifPresentOrElse(folder -> {
-            folder.setName(name);
-            folderRepository.save(folder);
-        }, () -> {
-            throw new EntityAlreadyExistsOrDoesNotExistException();
-        });
+        folderRepository.findById(UUID.fromString(folderId)).ifPresentOrElse(
+                folder -> {
+                    folder.setName(name);
+                    folderRepository.save(folder);
+                },
+                () -> {
+                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                }
+        );
     }
 
     @Override
     public void deleteFolder(String folderId) {
-        Optional<Folder> folderOptional = folderRepository.findById(UUID.fromString(folderId));
-        folderOptional.ifPresentOrElse(folderRepository::delete, () -> {
-            throw new EntityAlreadyExistsOrDoesNotExistException();
-        });
+        folderRepository.findById(UUID.fromString(folderId)).ifPresentOrElse(
+                folderRepository::delete,
+                () -> {
+                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                }
+        );
     }
 
     @Override
     public ListFolderDto getAllFolders() {
-        List<Folder> folders = folderRepository.findAll();
-        return new ListFolderDto().folders(folderMapper.mapToFolderDtoList(folders));
+        return new ListFolderDto().folders(folderMapper.mapToFolderDtoList(folderRepository.findAll()));
     }
 }

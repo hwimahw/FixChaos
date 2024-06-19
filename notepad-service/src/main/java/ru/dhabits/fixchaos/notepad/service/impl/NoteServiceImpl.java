@@ -3,7 +3,6 @@ package ru.dhabits.fixchaos.notepad.service.impl;
 import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.model.Note;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.NoteRepository;
@@ -29,9 +28,7 @@ public class NoteServiceImpl implements NoteService {
         if (notebookOptional.isEmpty()) {
             throw new EntityAlreadyExistsOrDoesNotExistException("Notebook with id " + noteDto.getNotebookId() + " does not exist");
         }
-        Notebook notebook = notebookOptional.get();
-        Note note = noteMapper.mapToNote(noteDto);
-        note.setNotebook(notebook);
+        Note note = noteMapper.mapToNote(noteDto).setNotebook(notebookOptional.get());
         return noteMapper.mapToNoteDto(noteRepository.save(note));
     }
 
@@ -47,6 +44,7 @@ public class NoteServiceImpl implements NoteService {
                 },
                 () -> {
                     throw new EntityAlreadyExistsOrDoesNotExistException();
-                });
+                }
+        );
     }
 }

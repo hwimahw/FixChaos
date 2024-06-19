@@ -80,10 +80,10 @@ public class NoteServiceTest {
         }
 
         {
-            Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class,
-                    () -> {
-                        noteService.createNote(noteDto);
-                    });
+            Assertions.assertThrowsExactly(
+                    EntityAlreadyExistsOrDoesNotExistException.class,
+                    () -> noteService.createNote(noteDto)
+            );
         }
     }
 }

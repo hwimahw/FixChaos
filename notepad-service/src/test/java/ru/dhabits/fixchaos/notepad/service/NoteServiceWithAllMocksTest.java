@@ -8,16 +8,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.dhabits.fixchaos.notepad.db.model.Note;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.NoteRepository;
 import ru.dhabits.fixchaos.notepad.db.repository.NotebookRepository;
 import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistException;
 import ru.dhabits.fixchaos.notepad.mapper.NoteMapper;
-import ru.dhabits.fixchaos.notepad.mapper.NoteMapperImpl;
 import ru.dhabits.fixchaos.notepad.service.impl.NoteServiceImpl;
 
 import java.util.Optional;
@@ -87,10 +83,10 @@ public class NoteServiceWithAllMocksTest {
         }
 
         {
-            Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class,
-                    () -> {
-                        noteService.createNote(noteDto);
-                    });
+            Assertions.assertThrowsExactly(
+                    EntityAlreadyExistsOrDoesNotExistException.class,
+                    () -> noteService.createNote(noteDto)
+            );
         }
     }
 
@@ -120,9 +116,9 @@ public class NoteServiceWithAllMocksTest {
             Mockito.doThrow(new EntityAlreadyExistsOrDoesNotExistException()).when(noteRepository).findById(any());
         }
 
-        Assertions.assertThrows(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
-                    noteService.updateNote(id, name);
-                }
+        Assertions.assertThrows(
+                EntityAlreadyExistsOrDoesNotExistException.class,
+                () -> noteService.updateNote(id, name)
         );
     }
 }

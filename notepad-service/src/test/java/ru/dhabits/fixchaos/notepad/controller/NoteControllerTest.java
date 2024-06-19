@@ -17,7 +17,6 @@ import ru.dhabits.fixchaos.notepad.service.NoteService;
 
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -50,8 +49,9 @@ public class NoteControllerTest {
         }
 
         mockMvc.perform(post("/v1/note")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(noteDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(noteDto))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("noteName"))
                 .andExpect(jsonPath("id").value(noteId.toString()));
@@ -71,10 +71,15 @@ public class NoteControllerTest {
         }
 
         mockMvc.perform(post("/v1/note")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(noteDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(noteDto)))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
 
     }
 
@@ -88,8 +93,8 @@ public class NoteControllerTest {
         }
 
         mockMvc.perform(put("/v1/note/{id}", id)
-                .queryParam("name", name)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .queryParam("name", name)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -103,9 +108,14 @@ public class NoteControllerTest {
         }
 
         mockMvc.perform(put("/v1/note/{id}", id)
-                .queryParam("name", name)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .queryParam("name", name)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 }

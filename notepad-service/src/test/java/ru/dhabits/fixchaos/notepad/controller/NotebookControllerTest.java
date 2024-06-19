@@ -17,7 +17,6 @@ import ru.dhabits.fixchaos.notepad.service.NotebookService;
 
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -52,8 +51,8 @@ public class NotebookControllerTest {
         }
 
         mockMvc.perform(post("/v1/notebook")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notebookRequestDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(notebookRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("name").value("notebookName"))
                 .andExpect(jsonPath("id").value(uuid.toString()));
@@ -64,20 +63,22 @@ public class NotebookControllerTest {
         NotebookDto notebookRequestDto = new NotebookDto();
         notebookRequestDto.setName("notebookName");
 
-        NotebookDto notebookResponseDto = new NotebookDto();
-        UUID uuid = UUID.randomUUID();
-        notebookResponseDto.setName("notebookName");
-        notebookResponseDto.setId(uuid);
-
         {
-            Mockito.doThrow(new EntityAlreadyExistsOrDoesNotExistException()).when(notebookService).createNotebook(notebookRequestDto);
+            doThrow(new EntityAlreadyExistsOrDoesNotExistException())
+                    .when(notebookService)
+                    .createNotebook(notebookRequestDto);
         }
 
         mockMvc.perform(post("/v1/notebook")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notebookRequestDto)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(notebookRequestDto)))
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 
     @Test
@@ -89,9 +90,11 @@ public class NotebookControllerTest {
             Mockito.doNothing().when(notebookService).updateNotebook(id, name);
         }
 
-        mockMvc.perform(put("/v1/notebook/{id}", id)
-                .queryParam("name", name)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        put("/v1/notebook/{id}", id)
+                                .queryParam("name", name).
+                                contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk());
     }
 
@@ -101,13 +104,22 @@ public class NotebookControllerTest {
         String name = "name";
 
         {
-            doThrow(new EntityAlreadyExistsOrDoesNotExistException()).when(notebookService).updateNotebook(id, name);
+            doThrow(new EntityAlreadyExistsOrDoesNotExistException())
+                    .when(notebookService)
+                    .updateNotebook(id, name);
         }
 
-        mockMvc.perform(put("/v1/notebook/{id}", id)
-                .queryParam("name", name)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        put("/v1/notebook/{id}", id)
+                                .queryParam("name", name)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 }

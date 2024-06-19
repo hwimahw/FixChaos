@@ -32,10 +32,8 @@ public class NotebookServiceImpl implements NotebookService {
         if (folderOptional.isEmpty()) {
             throw new EntityAlreadyExistsOrDoesNotExistException("Folder with id " + notebookDto.getFolderId() + " does not exist");
         }
-        Folder folder = folderOptional.get();
-        Notebook notebook = notebookMapper.mapToNotebook(notebookDto);
+        Notebook notebook = notebookMapper.mapToNotebook(notebookDto).setFolder(folderOptional.get());
         setNotebookToNotes(notebook, notebook.getNotes());
-        notebook.setFolder(folder);
         return notebookMapper.mapToNotebookDto(notebookRepository.save(notebook));
     }
 
@@ -44,12 +42,13 @@ public class NotebookServiceImpl implements NotebookService {
         if (name == null) {
             return;
         }
-        Optional<Notebook> notebookOptional = notebookRepository.findById(UUID.fromString(id));
-        notebookOptional.ifPresentOrElse(notebook -> {
-            notebook.setName(name);
-            notebookRepository.save(notebook);
-        }, () -> {
-            throw new EntityAlreadyExistsOrDoesNotExistException();
-        });
+        notebookRepository.findById(UUID.fromString(id)).ifPresentOrElse(
+                notebook -> {
+                    notebook.setName(name);
+                    notebookRepository.save(notebook);
+                }, () -> {
+                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                }
+        );
     }
 }

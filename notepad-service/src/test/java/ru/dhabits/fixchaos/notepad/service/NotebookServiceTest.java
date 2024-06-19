@@ -136,9 +136,10 @@ public class NotebookServiceTest {
         }
 
         {
-            Assertions.assertThrowsExactly(EntityAlreadyExistsOrDoesNotExistException.class, () -> {
-                notebookService.updateNotebook(id, name);
-            });
+            Assertions.assertThrowsExactly(
+                    EntityAlreadyExistsOrDoesNotExistException.class,
+                    () -> notebookService.updateNotebook(id, name)
+            );
         }
     }
 }

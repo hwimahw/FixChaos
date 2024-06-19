@@ -71,15 +71,16 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
         folderRequestDto.setNotebooks(List.of(notebookDto1, notebookDto2));
 
-        mockMvc.perform(post("/v1/folder")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(folderRequestDto)))
+        mockMvc.perform(
+                        post("/v1/folder")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(folderRequestDto))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("response2"))
                 .andExpect(jsonPath("$.notebooks", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$.notebooks[0].name").value("nameNotebook1"))
-                .andExpect(jsonPath("$.notebooks[1].name").value("nameNotebook2"))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$.notebooks[1].name").value("nameNotebook2"));
     }
 
     @Test
@@ -99,11 +100,18 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
         folderService.createFolder(folderRequestDto);
 
 
-        mockMvc.perform(post("/v1/folder")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(folderRequestDto)))
+        mockMvc.perform(
+                        post("/v1/folder")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(folderRequestDto))
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 
     @Test
@@ -113,10 +121,12 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
         FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
 
-        mockMvc.perform(put("/v1/folder/{id}", folderDtoResponse.getId())
-                        .header("Authorization", "Bearer")
-                        .queryParam("name", "newName")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        put("/v1/folder/{id}", folderDtoResponse.getId())
+                                .header("Authorization", "Bearer")
+                                .queryParam("name", "newName")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk());
 
         Optional<Folder> optionalFolder = folderRepository.findById(folderDtoResponse.getId());
@@ -132,12 +142,19 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
         folderService.createFolder(folderRequestDto);
 
-        mockMvc.perform(put("/v1/folder/{id}", UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87"))
-                        .header("Authorization", "Bearer")
-                        .queryParam("name", "newName")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        put("/v1/folder/{id}", UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87"))
+                                .header("Authorization", "Bearer")
+                                .queryParam("name", "newName")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 
 
@@ -148,9 +165,10 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
 
         FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
 
-
-        mockMvc.perform(delete("/v1/folder/{id}", UUID.fromString(folderDtoResponse.getId().toString()))
-                        .header("Authorization", "Bearer"))
+        mockMvc.perform(
+                        delete("/v1/folder/{id}", UUID.fromString(folderDtoResponse.getId().toString()))
+                                .header("Authorization", "Bearer")
+                )
                 .andExpect(status().is2xxSuccessful());
 
         Optional<Folder> optionalFolder = folderRepository.findById(folderDtoResponse.getId());
@@ -162,13 +180,22 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("newName");
 
-        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+        folderService.createFolder(folderRequestDto);
 
-
-        mockMvc.perform(delete("/v1/folder/{id}", UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87"))
-                        .header("Authorization", "Bearer"))
+        mockMvc.perform(
+                        delete(
+                                "/v1/folder/{id}",
+                                UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87")
+                        )
+                                .header("Authorization", "Bearer")
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
 
     }
 

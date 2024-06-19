@@ -90,11 +90,19 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
         noteDto.setNotebookId(notebookDtoResponse.getId());
 
         //when
-        mockMvc.perform(post("/v1/note").with(SecurityMockMvcRequestPostProcessors.httpBasic("user", "password"))
+        mockMvc.perform(
+                        post("/v1/note")
+                                .with(
+                                        SecurityMockMvcRequestPostProcessors.httpBasic(
+                                                "user",
+                                                "password"
+                                        )
+                                )
 //                        .header("Authorization", "Bearer")
-                        //then
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(noteDto)))
+                                //then
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(noteDto))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("noteName"));
     }
@@ -110,21 +118,25 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
         NotebookDto notebookDto = new NotebookDto();
         notebookDto.setName("notebookName");
         notebookDto.setFolderId(folderDto.getId());
-        NotebookDto notebookDtoResponse = notebookService.createNotebook(notebookDto);
+        notebookService.createNotebook(notebookDto);
 
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteName");
         noteDto.setNotebookId(UUID.randomUUID());
 
         //when
-        mockMvc.perform(post("/v1/note")
-                        //then
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(noteDto)))
+        mockMvc.perform(
+                        post("/v1/note")
+                                //then
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(noteDto))
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> {
-                    Assertions.assertInstanceOf(EntityAlreadyExistsOrDoesNotExistException.class, result.getResolvedException());
-                });
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 
     @Test
@@ -145,11 +157,13 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
         NoteDto noteDtoResponse = noteService.createNote(noteDto);
 
         //when
-        mockMvc.perform(put("/v1/note/{id}", noteDtoResponse.getId())
-                        .header("Authorization", "Bearer")
-                        .queryParam("name", "newNoteName")
-                        //then
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        put("/v1/note/{id}", noteDtoResponse.getId())
+                                .header("Authorization", "Bearer")
+                                .queryParam("name", "newNoteName")
+                                //then
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isOk());
 
         Optional<Note> optionalNote = noteRepository.findById(noteDtoResponse.getId());
@@ -172,16 +186,23 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
         NoteDto noteDto = new NoteDto();
         noteDto.setName("noteName");
         noteDto.setNotebookId(notebookDtoResponse.getId());
-        noteDto = noteService.createNote(noteDto);
+        noteService.createNote(noteDto);
 
         //when
-        mockMvc.perform(put("/v1/note/{id}", UUID.randomUUID())
-                        .header("Authorization", "Bearer")
-                        .queryParam("name", "newNoteName")
-                        //then
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        put("/v1/note/{id}", UUID.randomUUID())
+                                .header("Authorization", "Bearer")
+                                .queryParam("name", "newNoteName")
+                                //then
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertInstanceOf(EntityAlreadyExistsOrDoesNotExistException.class, result.getResolvedException()));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 }
 

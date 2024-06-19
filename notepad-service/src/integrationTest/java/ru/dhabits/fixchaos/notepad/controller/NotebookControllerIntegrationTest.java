@@ -88,10 +88,12 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
         notebookDto.setNotes(notes);
 
         //when
-        mockMvc.perform(post("/v1/notebook")
-        //then
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notebookDto)))
+        mockMvc.perform(
+                        post("/v1/notebook")
+                                //then
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(notebookDto))
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("name"))
                 .andExpect(jsonPath("$.notes", Matchers.hasSize(2)))
@@ -117,12 +119,19 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
         notebookDto.setName("name");
         notebookDto.setNotes(notes);
 
-        mockMvc.perform(post("/v1/notebook")
-                .header("Authorization", "Bearer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notebookDto)))
+        mockMvc.perform(
+                        post("/v1/notebook")
+                                .header("Authorization", "Bearer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(notebookDto))
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 
     @Test
@@ -145,11 +154,13 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
 
         NotebookDto notebookDtoResponse = notebookService.createNotebook(notebookDto);
 
-        mockMvc.perform(put("/v1/notebook/{id}", notebookDtoResponse.getId())
-                .queryParam("name", "newName")
-                .header("Authorization", "Bearer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notebookDto)))
+        mockMvc.perform(
+                        put("/v1/notebook/{id}", notebookDtoResponse.getId())
+                                .queryParam("name", "newName")
+                                .header("Authorization", "Bearer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(notebookDto))
+                )
                 .andExpect(status().isOk());
 
         Optional<Notebook> notebookOptional = notebookRepository.findById(notebookDtoResponse.getId());
@@ -178,12 +189,19 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
 
         notebookService.createNotebook(notebookDto);
 
-        mockMvc.perform(put("/v1/notebook/{id}", UUID_ID)
-                .queryParam("name", "newName")
-                .header("Authorization", "Bearer")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(notebookDto)))
+        mockMvc.perform(
+                        put("/v1/notebook/{id}", UUID_ID)
+                                .queryParam("name", "newName")
+                                .header("Authorization", "Bearer")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsBytes(notebookDto))
+                )
                 .andExpect(status().is4xxClientError())
-                .andExpect(result -> Assertions.assertTrue(result.getResolvedException() instanceof EntityAlreadyExistsOrDoesNotExistException));
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        )
+                );
     }
 }
