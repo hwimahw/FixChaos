@@ -16,7 +16,6 @@ import ru.dhabits.fixchaos.notepad.error.EntityAlreadyExistsOrDoesNotExistExcept
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)

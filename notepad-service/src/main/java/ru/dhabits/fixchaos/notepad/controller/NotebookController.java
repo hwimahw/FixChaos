@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import ru.dhabits.fixchaos.notepad.service.NotebookService;
 
-import java.util.UUID;
-
 @Controller
 @RequiredArgsConstructor
 public class NotebookController implements NotebookApi {
