@@ -4,6 +4,7 @@ import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
@@ -47,6 +48,17 @@ public class NotebookServiceImpl implements NotebookService {
                     notebook.setName(name);
                     notebookRepository.save(notebook);
                 }, () -> {
+                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                }
+        );
+    }
+
+    @Override
+    @Transactional
+    public void deleteNotebook(String notebookId) {
+        notebookRepository.findById(UUID.fromString(notebookId)).ifPresentOrElse(
+                notebookRepository::delete,
+                () -> {
                     throw new EntityAlreadyExistsOrDoesNotExistException();
                 }
         );

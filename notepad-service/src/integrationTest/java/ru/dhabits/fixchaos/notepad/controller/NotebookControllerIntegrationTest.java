@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
+import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
 import ru.dhabits.fixchaos.notepad.db.repository.NoteRepository;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -203,5 +205,37 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
                                 result.getResolvedException()
                         )
                 );
+    }
+
+    @Test
+    void deleteFolder_SuccessfulDeleting() throws Exception {
+        FolderDto folderRequestDto = new FolderDto();
+        folderRequestDto.setName("newName");
+        NotebookDto notebookDto1 = new NotebookDto();
+        notebookDto1.setName("notebook1");
+        NotebookDto notebookDto2 = new NotebookDto();
+        notebookDto2.setName("notebook2");
+        folderRequestDto.setNotebooks(List.of(notebookDto1, notebookDto2));
+
+        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+        Optional<Folder> optionalFolder = folderRepository.findById(folderDtoResponse.getId());
+        Assertions.assertTrue(optionalFolder.isPresent());
+        Folder folder = optionalFolder.get();
+        Assertions.assertNotNull(folder.getNotebooks());
+        Assertions.assertEquals(2, folder.getNotebooks().size());
+        Notebook notebook1 = folder.getNotebooks().get(0);
+        Notebook notebook2 = folder.getNotebooks().get(1);
+
+        mockMvc.perform(
+                        delete("/v1/notebook/{id}", UUID.fromString(notebook1.getId().toString()))
+                )
+                .andExpect(status().is2xxSuccessful());
+
+        Optional<Folder> optionalFolderCheck = folderRepository.findById(folderDtoResponse.getId());
+        Assertions.assertTrue(optionalFolderCheck.isPresent());
+        Folder folderCheck = optionalFolderCheck.get();
+        Assertions.assertNotNull(folder.getNotebooks());
+        Assertions.assertEquals(1, folderCheck.getNotebooks().size());
+        Assertions.assertEquals(notebook2.getId(), folderCheck.getNotebooks().get(0).getId());
     }
 }

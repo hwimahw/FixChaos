@@ -19,6 +19,12 @@ public class NotebookController implements NotebookApi {
     }
 
     @Override
+    public ResponseEntity<Void> deleteNotebook(String id) {
+        notebookService.deleteNotebook(id);
+        return ResponseEntity.status(204).build();
+    }
+
+    @Override
     public ResponseEntity<Void> updateNotebook(String id, @Valid String name) {
         notebookService.updateNotebook(id, name);
         return ResponseEntity.ok().build();
