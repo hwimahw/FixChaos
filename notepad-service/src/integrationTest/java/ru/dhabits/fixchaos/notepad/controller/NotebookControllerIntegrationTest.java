@@ -277,6 +277,21 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
         Assertions.assertEquals(2, notebookDto2.getNotes().size());
     }
 
+    @Test
+    void getNotebooksOfFolder_FolderThatDoesNotExist_ThrowsException() throws Exception {
+
+        mockMvc.perform(
+                        get("/v1/notebook/{folderId}", UUID.randomUUID().toString())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().is4xxClientError())
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        ));
+    }
+
     private Folder createFolder(String folderName) {
         Folder folder = new Folder().setName(folderName);
         Notebook notebook1 = new Notebook().setName("notebook1");
