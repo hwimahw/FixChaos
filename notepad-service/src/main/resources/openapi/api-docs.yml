@@ -345,6 +345,57 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
+  /v1/notebook/{folderId}:
+    get:
+      operationId: getNotebooksOfFolder
+      summary: Get notebooks of folder
+      parameters:
+        - in: path
+          name: folderId
+          required: true
+          schema:
+            type: String
+            format: uuid
+      tags:
+        - Notebook
+      responses:
+        '200':
+          description: Notebooks are gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNotebookDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
 
   /v1/note:
     post:
@@ -468,6 +519,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FolderDto'
+
+    ListNotebookDto:
+      type: object
+      properties:
+        notebooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotebookDto'
 
     FolderDto:
       type: object

@@ -1,6 +1,7 @@
 package ru.dhabits.fixchaos.notepad.controller;
 
 import com.dhabits.code.fixchaos.notepad.controller.NotebookApi;
+import com.dhabits.code.fixchaos.notepad.dto.ListNotebookDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,11 @@ public class NotebookController implements NotebookApi {
     public ResponseEntity<Void> deleteNotebook(String id) {
         notebookService.deleteNotebook(id);
         return ResponseEntity.status(204).build();
+    }
+
+    @Override
+    public ResponseEntity<ListNotebookDto> getNotebooksOfFolder(String folderId) {
+        return ResponseEntity.ok(notebookService.getNotebooksOfFolder(folderId));
     }
 
     @Override

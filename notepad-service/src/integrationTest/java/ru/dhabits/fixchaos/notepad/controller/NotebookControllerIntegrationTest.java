@@ -1,6 +1,7 @@
 package ru.dhabits.fixchaos.notepad.controller;
 
 import com.dhabits.code.fixchaos.notepad.dto.FolderDto;
+import com.dhabits.code.fixchaos.notepad.dto.ListNotebookDto;
 import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +16,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
 import ru.dhabits.fixchaos.notepad.db.model.Folder;
+import ru.dhabits.fixchaos.notepad.db.model.Note;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
 import ru.dhabits.fixchaos.notepad.db.repository.NoteRepository;
@@ -30,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -237,5 +241,58 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
         Assertions.assertNotNull(folder.getNotebooks());
         Assertions.assertEquals(1, folderCheck.getNotebooks().size());
         Assertions.assertEquals(notebook2.getId(), folderCheck.getNotebooks().get(0).getId());
+    }
+
+    @Test
+    void getNotebooksOfFolder_SuccessfulGetting() throws Exception {
+        Folder folder = folderRepository.save(createFolder("folder1"));
+
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get("/v1/notebook/{folderId}", UUID.fromString(folder.getId().toString()))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+        ObjectMapper objectMapper = new ObjectMapper();
+        ListNotebookDto listNotebookDto = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                ListNotebookDto.class
+        );
+
+
+        Assertions.assertNotNull(listNotebookDto);
+        Assertions.assertNotNull(listNotebookDto.getNotebooks());
+        List<NotebookDto> notebookDtos = listNotebookDto.getNotebooks();
+        Assertions.assertEquals(2, notebookDtos.size());
+
+        NotebookDto notebookDto1 = notebookDtos.get(0);
+        Assertions.assertEquals("notebook1", notebookDto1.getName());
+        Assertions.assertNotNull(notebookDto1.getNotes());
+        Assertions.assertEquals(2, notebookDto1.getNotes().size());
+
+        NotebookDto notebookDto2 = notebookDtos.get(1);
+        Assertions.assertEquals("notebook2", notebookDto2.getName());
+        Assertions.assertNotNull(notebookDto2.getNotes());
+        Assertions.assertEquals(2, notebookDto2.getNotes().size());
+    }
+
+    private Folder createFolder(String folderName) {
+        Folder folder = new Folder().setName(folderName);
+        Notebook notebook1 = new Notebook().setName("notebook1");
+        notebook1.setFolder(folder);
+        Note note1 = new Note().setName("note1").setNotebook(notebook1);
+        Note note2 = new Note().setName("note2").setNotebook(notebook1);
+        notebook1.setNotes(List.of(note1, note2));
+
+        Notebook notebook2 = new Notebook().setName("notebook2");
+        notebook2.setFolder(folder);
+        Note note3 = new Note().setName("note3").setNotebook(notebook2);
+        Note note4 = new Note().setName("note4").setNotebook(notebook2);
+        notebook2.setNotes(List.of(note3, note4));
+
+        folder.setNotebooks(List.of(notebook1, notebook2));
+
+        return folder;
     }
 }

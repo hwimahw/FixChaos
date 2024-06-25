@@ -1,5 +1,6 @@
 package ru.dhabits.fixchaos.notepad.service.impl;
 
+import com.dhabits.code.fixchaos.notepad.dto.ListNotebookDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,5 +63,18 @@ public class NotebookServiceImpl implements NotebookService {
                     throw new EntityAlreadyExistsOrDoesNotExistException();
                 }
         );
+    }
+
+    @Override
+    public ListNotebookDto getNotebooksOfFolder(String folderId) {
+        ListNotebookDto listNotebookDto = new ListNotebookDto();
+        listNotebookDto.setNotebooks(
+                folderRepository
+                        .findById(UUID.fromString(folderId))
+                        .map(Folder::getNotebooks)
+                        .map(notebookMapper::mapToNotebookDtoList)
+                        .orElseThrow(EntityAlreadyExistsOrDoesNotExistException::new)
+        );
+        return listNotebookDto;
     }
 }
