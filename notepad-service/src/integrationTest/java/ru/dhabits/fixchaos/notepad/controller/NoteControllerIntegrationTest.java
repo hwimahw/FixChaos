@@ -301,6 +301,62 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
                                 result.getResolvedException()
                         ));
     }
+
+    @Test
+    void getNoteById_SuccessfulGetting() throws Exception {
+        FolderDto folderRequestDto = new FolderDto();
+        folderRequestDto.setName("newName");
+        NotebookDto notebookDto = new NotebookDto();
+        notebookDto.setName("notebook");
+        NoteDto noteDto1 = new NoteDto();
+        noteDto1.setName("note1");
+        NoteDto noteDto2 = new NoteDto();
+        noteDto2.setName("note2");
+        notebookDto.setNotes(List.of(noteDto1, noteDto2));
+        folderRequestDto.setNotebooks(List.of(notebookDto));
+
+        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+        Assertions.assertNotNull(folderDtoResponse.getNotebooks());
+        Assertions.assertEquals(1, folderDtoResponse.getNotebooks().size());
+        NotebookDto notebookDtoResponse = folderDtoResponse.getNotebooks().get(0);
+        Assertions.assertNotNull(notebookDtoResponse.getNotes());
+        Assertions.assertEquals(2, notebookDtoResponse.getNotes().size());
+        NoteDto noteDto = notebookDtoResponse.getNotes().get(0);
+
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get(
+                                "/v1/note").param("id", noteDto.getId().toString()
+                        )
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        NoteDto noteDtoResponse = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                NoteDto.class
+        );
+
+        Assertions.assertNotNull(noteDtoResponse);
+        Assertions.assertEquals(noteDto.getId(), noteDtoResponse.getId());
+        Assertions.assertEquals(noteDto.getName(), noteDtoResponse.getName());
+    }
+
+    @Test
+    void getNoteById_ThatDoesNotExist_ThrowsException() throws Exception {
+        mockMvc.perform(
+                        get(
+                                "/v1/note").param("id", UUID.randomUUID().toString()
+                        )
+                )
+                .andExpect(status().is4xxClientError())
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        ));
+    }
 }
 
 
