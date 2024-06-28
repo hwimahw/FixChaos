@@ -145,7 +145,9 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
         folderService.createFolder(folderRequestDto);
 
         mockMvc.perform(
-                        put("/v1/folder/{id}", UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87"))
+                        put("/v1/folder/{id}",
+                                UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87")
+                        )
                                 .header("Authorization", "Bearer")
                                 .queryParam("name", "newName")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -168,7 +170,9 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
         FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
 
         mockMvc.perform(
-                        delete("/v1/folder/{id}", UUID.fromString(folderDtoResponse.getId().toString()))
+                        delete("/v1/folder/{id}",
+                                UUID.fromString(folderDtoResponse.getId().toString())
+                        )
                                 .header("Authorization", "Bearer")
                 )
                 .andExpect(status().is2xxSuccessful());
