@@ -1,6 +1,7 @@
 package ru.dhabits.fixchaos.notepad.controller;
 
 import com.dhabits.code.fixchaos.notepad.dto.FolderDto;
+import com.dhabits.code.fixchaos.notepad.dto.ListNoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NotebookDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,8 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
+import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.model.Note;
+import ru.dhabits.fixchaos.notepad.db.model.Notebook;
 import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
 import ru.dhabits.fixchaos.notepad.db.repository.NoteRepository;
 import ru.dhabits.fixchaos.notepad.db.repository.NotebookRepository;
@@ -24,9 +28,12 @@ import ru.dhabits.fixchaos.notepad.service.FolderService;
 import ru.dhabits.fixchaos.notepad.service.NoteService;
 import ru.dhabits.fixchaos.notepad.service.NotebookService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -198,6 +205,101 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
                                 result.getResolvedException()
                         )
                 );
+    }
+
+    @Test
+    void deleteNote_SuccessfulDeleting() throws Exception {
+        FolderDto folderRequestDto = new FolderDto();
+        folderRequestDto.setName("newName");
+        NotebookDto notebookDto = new NotebookDto();
+        notebookDto.setName("notebook");
+        NoteDto noteDto1 = new NoteDto();
+        noteDto1.setName("note1");
+        NoteDto noteDto2 = new NoteDto();
+        noteDto2.setName("note2");
+        notebookDto.setNotes(List.of(noteDto1, noteDto2));
+        folderRequestDto.setNotebooks(List.of(notebookDto));
+
+        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+        Optional<Folder> optionalFolder = folderRepository.findById(folderDtoResponse.getId());
+        Assertions.assertTrue(optionalFolder.isPresent());
+        Folder folder = optionalFolder.get();
+        Assertions.assertNotNull(folder.getNotebooks());
+        Assertions.assertEquals(1, folder.getNotebooks().size());
+        Notebook notebook = folder.getNotebooks().get(0);
+        Assertions.assertNotNull(notebook.getNotes());
+        Assertions.assertEquals(2, notebook.getNotes().size());
+        Note note1 = notebook.getNotes().get(0);
+        Note note2 = notebook.getNotes().get(1);
+
+        mockMvc.perform(
+                        delete("/v1/note/{id}", UUID.fromString(note1.getId().toString()))
+                )
+                .andExpect(status().is2xxSuccessful());
+
+        Optional<Folder> optionalFolderCheck = folderRepository.findById(folderDtoResponse.getId());
+        Assertions.assertTrue(optionalFolderCheck.isPresent());
+        Folder folderCheck = optionalFolderCheck.get();
+        Assertions.assertNotNull(folder.getNotebooks());
+        Assertions.assertEquals(1, folderCheck.getNotebooks().size());
+        Notebook notebookCheck = folderCheck.getNotebooks().get(0);
+        Assertions.assertNotNull(notebookCheck.getNotes());
+        Assertions.assertEquals(1, notebookCheck.getNotes().size());
+        Note noteCheck = notebookCheck.getNotes().get(0);
+        Assertions.assertEquals(note2.getName(), noteCheck.getName());
+    }
+
+    @Test
+    void getNotesOfNotebook_SuccessfulGetting() throws Exception {
+        FolderDto folderRequestDto = new FolderDto();
+        folderRequestDto.setName("newName");
+        NotebookDto notebookDto = new NotebookDto();
+        notebookDto.setName("notebook");
+        NoteDto noteDto1 = new NoteDto();
+        noteDto1.setName("note1");
+        NoteDto noteDto2 = new NoteDto();
+        noteDto2.setName("note2");
+        notebookDto.setNotes(List.of(noteDto1, noteDto2));
+        folderRequestDto.setNotebooks(List.of(notebookDto));
+
+        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
+        Assertions.assertNotNull(folderDtoResponse.getNotebooks());
+        Assertions.assertEquals(1, folderDtoResponse.getNotebooks().size());
+        NotebookDto notebookDtoResponse = folderDtoResponse.getNotebooks().get(0);
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get(
+                                "/v1/note/{notebookId}",
+                                UUID.fromString(notebookDtoResponse.getId().toString())
+                        )
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ListNoteDto listNoteDto = objectMapper.readValue(
+                mvcResult.getResponse().getContentAsString(),
+                ListNoteDto.class
+        );
+
+        Assertions.assertNotNull(listNoteDto);
+        Assertions.assertNotNull(listNoteDto.getNotes());
+        Assertions.assertEquals(2, listNoteDto.getNotes().size());
+    }
+
+    @Test
+    void getNotesOfNotebook_ThatDoesNotExist_ThrowsException() throws Exception {
+        mockMvc.perform(
+                        get(
+                                "/v1/note/{notebookId}",
+                                UUID.randomUUID().toString())
+                )
+                .andExpect(status().is4xxClientError())
+                .andExpect(
+                        result -> Assertions.assertInstanceOf(
+                                EntityAlreadyExistsOrDoesNotExistException.class,
+                                result.getResolvedException()
+                        ));
     }
 }
 

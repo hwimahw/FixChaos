@@ -1,5 +1,6 @@
 package ru.dhabits.fixchaos.notepad.service.impl;
 
+import com.dhabits.code.fixchaos.notepad.dto.ListNoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,36 @@ public class NoteServiceImpl implements NoteService {
                     throw new EntityAlreadyExistsOrDoesNotExistException();
                 }
         );
+    }
+
+    @Override
+    public void deleteNote(String id) {
+        noteRepository.findById(UUID.fromString(id)).ifPresentOrElse(
+                noteRepository::delete,
+                () -> {
+                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                }
+        );
+    }
+
+    @Override
+    public ListNoteDto getNotesOfNotebook(String notebookId) {
+        ListNoteDto listNoteDto = new ListNoteDto();
+        listNoteDto.setNotes(
+                notebookRepository
+                        .findById(UUID.fromString(notebookId))
+                        .map(Notebook::getNotes)
+                        .map(noteMapper::mapToNoteDtoList)
+                        .orElseThrow(EntityAlreadyExistsOrDoesNotExistException::new)
+        );
+        return listNoteDto;
+    }
+
+    @Override
+    public NoteDto getNodeById(String id) {
+        return noteRepository
+                .findById(UUID.fromString(id))
+                .map(noteMapper::mapToNoteDto)
+                .orElseThrow(EntityAlreadyExistsOrDoesNotExistException::new);
     }
 }

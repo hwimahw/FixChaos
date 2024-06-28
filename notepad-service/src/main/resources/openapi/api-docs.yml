@@ -446,6 +446,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
+    get:
+      operationId: getNoteById
+      summary: Get note by id
+      tags:
+        - Note
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: String
+            format: uuid
+      responses:
+        '200':
+          description: Note is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
 
   /v1/note/{id}:
     put:
@@ -497,6 +547,102 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
+    delete:
+      operationId: deleteNote
+      summary: Delete note
+      tags:
+        - Note
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: String
+            format: uuid
+      responses:
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+  /v1/note/{notebookId}:
+    get:
+      operationId: getNotesOfNotebook
+      summary: Get notes of notebook
+      parameters:
+        - in: path
+          name: notebookId
+          required: true
+          schema:
+            type: String
+            format: uuid
+      tags:
+        - Note
+      responses:
+        '200':
+          description: Notes are gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListNoteDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
 components:
   schemas:
     ErrorResponseDto:
@@ -527,6 +673,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotebookDto'
+
+    ListNoteDto:
+      type: object
+      properties:
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NoteDto'
 
     FolderDto:
       type: object
