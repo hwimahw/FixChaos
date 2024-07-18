@@ -27,13 +27,15 @@ openApiGenerate {
     ]
 }
 
-sourceSets  {
+
+sourceSets {
     main {
         java {
             srcDir("${openApiGenerate.outputDir.get()}/src/main/java")
         }
     }
 }
+
 
 tasks.compileJava.dependsOn(tasks.openApiGenerate)
 dependencies {

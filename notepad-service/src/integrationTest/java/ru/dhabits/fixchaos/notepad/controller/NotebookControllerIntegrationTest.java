@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
@@ -42,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext
 public class NotebookControllerIntegrationTest extends TestConfigHelper {
 
     private static final UUID UUID_ID = UUID.fromString("49c3f407-9838-4b7b-b694-aa4d4faeb047");
@@ -180,7 +182,6 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
     public void updateNotebook_UpdateNameOfNotExistingNotebook_ThrowsException() throws Exception {
         FolderDto folderRequestDto = new FolderDto();
         folderRequestDto.setName("folder");
-        FolderDto folderDtoResponse = folderService.createFolder(folderRequestDto);
 
         NoteDto note1 = new NoteDto();
         NoteDto note2 = new NoteDto();
@@ -189,11 +190,11 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
         List<NoteDto> notes = List.of(note1, note2);
 
         NotebookDto notebookDto = new NotebookDto();
-        notebookDto.setFolderId(folderDtoResponse.getId());
         notebookDto.setName("oldName");
         notebookDto.setNotes(notes);
 
-        notebookService.createNotebook(notebookDto);
+        folderRequestDto.setNotebooks(List.of(notebookDto));
+        folderService.createFolder(folderRequestDto);
 
         mockMvc.perform(
                         put("/v1/notebook/{id}", UUID_ID)
@@ -244,7 +245,8 @@ public class NotebookControllerIntegrationTest extends TestConfigHelper {
     }
 
     @Test
-    void getNotebooksOfFolder_SuccessfulGetting() throws Exception {
+    void
+    getNotebooksOfFolder_SuccessfulGetting() throws Exception {
         Folder folder = folderRepository.save(createFolder("folder1"));
 
 

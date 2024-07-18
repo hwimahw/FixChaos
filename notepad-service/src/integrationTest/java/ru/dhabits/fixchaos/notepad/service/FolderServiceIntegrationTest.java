@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.dhabits.fixchaos.notepad.config.TestConfigHelper;
 import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.repository.FolderRepository;
@@ -19,7 +20,8 @@ import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class FolderServiceTest extends TestConfigHelper {
+@DirtiesContext
+public class FolderServiceIntegrationTest extends TestConfigHelper {
 
     @Autowired
     private FolderService folderService;
