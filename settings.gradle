@@ -1,3 +1,4 @@
 rootProject.name = 'FixChaos'
 include 'notepad-service'
+include 'trillioner-service'
 

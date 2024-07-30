@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id "org.openapi.generator" version "${openApiGeneratorVersion}"
+}
+
+openApiGenerate {
+    inputSpec = "$project.rootDir/trillioner-service/src/main/resources/openapi/api-docs.yml".toString()
+    outputDir = "$buildDir/generated/openapi"
+    generateModelDocumentation = true
+    generatorName = "spring"
+    library = "spring-boot"
+    apiPackage = "com.dhabits.code.fixchaos.trillioner.controller"
+    modelPackage = "com.dhabits.code.fixchaos.trillioner.dto"
+    invokerPackage = "com.dhabits.code.fixchaos.trillioner.api"
+//    importMappings = []
+    configOptions = [
+            useSpringBoot3: "true",
+            useTags: "true",
+            java8: "false",
+            dateLibrary: "java8",
+            interfaceOnly: "true",
+            skipDefaultInterface: "true",
+            hideGenerationTimestamp: "true",
+            serializableModel: "true",
+            booleanGetterPrefix: "is",
+            openApiNullable: "true",
+    ]
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDir("${openApiGenerate.outputDir.get()}/src/main/java")
+        }
+    }
+}
+
+
+tasks.compileJava.dependsOn(tasks.openApiGenerate)
+dependencies {
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiUiVersion}"
+    implementation "org.liquibase:liquibase-core"
+    implementation "org.openapitools:jackson-databind-nullable:${openApiToolsVersion}"
+    testImplementation "org.testcontainers:postgresql:${testcontainersPostgresqlVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersPostgresqlVersion}"
+    testImplementation "org.assertj:assertj-core:${assertJVersion}"
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    archiveFileName = "${project.name}.jar"
+}
+
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
+
