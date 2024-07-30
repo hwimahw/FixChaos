@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: main_direction/000000_initial.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: main_direction/000000_initial_data.yaml
+      relativeToChangelogFile: true

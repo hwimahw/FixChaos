@@ -23,5 +23,15 @@ services:
     depends_on:
       - db
 
+  trillioner-service:
+    build: ./trillioner-service
+    container_name: trillioner-service
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/fixchaos?currentSchema=trillioner
+      DB_USER: postgres_user
+      DB_PASSWORD: "postgres_password"
+    depends_on:
+      - db
+
 volumes:
   pgdata:

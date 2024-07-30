@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6b85be3a-c632-42b4-85a4-98dbaa55dd89
+      author: Irzakhanov Mansur
+      changes:
+        - createTable:
+            tableName: main_direction
+            columns:
+              - column:
+                  name: code
+                  type: varchar
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
