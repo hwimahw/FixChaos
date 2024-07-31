@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 51f71ebf-85f3-4391-9ee7-40aad3d488e5
+      author: Irzakhanov Mansur
+      changes:
+        - createTable:
+            tableName: short_term_goals
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: startDate
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: endDate
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: main_direction_id
+                  type: varchar
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_long_term_goals_main_directions
+                    references: main_directions(code)
+

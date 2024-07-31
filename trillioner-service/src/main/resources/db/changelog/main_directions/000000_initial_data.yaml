@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Irzakhanov Mansur
       changes:
         - insert:
-            tableName: main_direction
+            tableName: main_directions
             columns:
               - column:
                   name: code
@@ -13,7 +13,7 @@ databaseChangeLog:
                   name: name
                   value: Профессиональное развитие
         - insert:
-            tableName: main_direction
+            tableName: main_directions
             columns:
               - column:
                   name: code
@@ -22,7 +22,7 @@ databaseChangeLog:
                   name: name
                   value: Духовное развитие
         - insert:
-            tableName: main_direction
+            tableName: main_directions
             columns:
               - column:
                   name: code
@@ -31,7 +31,7 @@ databaseChangeLog:
                   name: name
                   value: Личная жизнь
         - insert:
-            tableName: main_direction
+            tableName: main_directions
             columns:
               - column:
                   name: code
@@ -40,7 +40,7 @@ databaseChangeLog:
                   name: name
                   value: Физическое развитие
         - insert:
-            tableName: main_direction
+            tableName: main_directions
             columns:
               - column:
                   name: code
@@ -49,7 +49,7 @@ databaseChangeLog:
                   name: name
                   value: Интеллектуальное развитие
         - insert:
-            tableName: main_direction
+            tableName: main_directions
             columns:
               - column:
                   name: code

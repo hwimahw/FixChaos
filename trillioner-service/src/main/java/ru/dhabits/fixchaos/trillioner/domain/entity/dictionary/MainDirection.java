@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.Immutable;
 
 @Entity
-@Table(name = "MAIN_DIRECTION", schema = "trillioner")
+@Table(name = "MAIN_DIRECTIONS", schema = "trillioner")
 @Getter
 @Setter
 @Immutable
