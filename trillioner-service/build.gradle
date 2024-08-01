@@ -12,7 +12,7 @@ openApiGenerate {
     apiPackage = "com.dhabits.code.fixchaos.trillioner.controller"
     modelPackage = "com.dhabits.code.fixchaos.trillioner.dto"
     invokerPackage = "com.dhabits.code.fixchaos.trillioner.api"
-//    importMappings = []
+    importMappings = ['LocalDate':'java.time.LocalDate']
     configOptions = [
             useSpringBoot3: "true",
             useTags: "true",

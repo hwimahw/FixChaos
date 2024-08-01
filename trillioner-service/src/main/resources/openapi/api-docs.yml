@@ -8,17 +8,17 @@ tags:
   - name: Folder
     description: Folder API
 paths:
-  /v1/folder:
+  /v1/short-term-goal:
     post:
-      operationId: createFolder
-      summary: Create new folder
+      operationId: createShortTermGoal
+      summary: Create new short-term goal
       tags:
-        - Folder
+        - ShortTermGoal
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/FolderDto'
+              $ref: '#/components/schemas/ShortTermGoalDto'
         required: true
       responses:
         '201':
@@ -26,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FolderDto'
+                $ref: '#/components/schemas/ShortTermGoalDto'
         '400':
           description: Invalid request
           content:
@@ -70,11 +70,8 @@ components:
         code:
           type: integer
           description: Error status code
-        traceId:
-          type: string
-          description: Trace Id
 
-    FolderDto:
+    ShortTermGoalDto:
       type: object
       properties:
         id:
@@ -83,4 +80,16 @@ components:
         name:
           type: string
           nullable: false
-          description: Name of folder
+          description: Name of short-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
