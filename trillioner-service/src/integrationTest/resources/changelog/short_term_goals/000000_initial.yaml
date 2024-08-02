@@ -1,10 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: fa29e5df-8c88-4b8c-af9a-2acfdf837251
+      id: 51f71ebf-85f3-4391-9ee7-40aad3d488e5
       author: Irzakhanov Mansur
       changes:
         - createTable:
-            tableName: long_term_goals
+            tableName: short_term_goals
+            schemaName: trillioner
             columns:
               - column:
                   name: id
@@ -33,5 +34,5 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     foreignKeyName: fk_long_term_goals_main_directions
-                    references: main_directions(code)
+                    references: trillioner.main_directions(code)
 

@@ -5,6 +5,7 @@ databaseChangeLog:
       changes:
         - createTable:
             tableName: long_term_goals
+            schemaName: trillioner
             columns:
               - column:
                   name: id
@@ -33,5 +34,5 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     foreignKeyName: fk_long_term_goals_main_directions
-                    references: main_directions(code)
+                    references: trillioner.main_directions(code)
 

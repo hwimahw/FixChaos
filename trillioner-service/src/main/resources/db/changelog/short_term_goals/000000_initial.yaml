@@ -18,13 +18,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: startDate
-                  type: timestamp
+                  name: start_date
+                  type: date
                   constraints:
                     nullable: false
               - column:
-                  name: endDate
-                  type: timestamp
+                  name: end_date
+                  type: date
                   constraints:
                     nullable: false
               - column:

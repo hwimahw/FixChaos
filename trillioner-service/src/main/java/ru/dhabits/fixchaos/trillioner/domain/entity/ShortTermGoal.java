@@ -1,5 +1,6 @@
 package ru.dhabits.fixchaos.trillioner.domain.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.dhabits.fixchaos.trillioner.domain.entity.dictionary.MainDirection;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -29,12 +30,12 @@ public class ShortTermGoal {
     private String name;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "main_direction_id")
     private MainDirection mainDirection;
 }

@@ -150,7 +150,6 @@ public class FolderControllerIntegrationTest extends TestConfigHelper {
                         put("/v1/folder/{id}",
                                 UUID.fromString("102397da-f0f5-4d6f-a657-1f5ddcf98b87")
                         )
-                                .header("Authorization", "Bearer")
                                 .queryParam("name", "newName")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )

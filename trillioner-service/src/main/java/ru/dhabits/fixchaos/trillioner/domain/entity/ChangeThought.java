@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -26,6 +26,6 @@ public class ChangeThought {
     private String thought;
 
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
 
 }

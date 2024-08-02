@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.notepad.config;
+package ru.dhabits.fixchaos.trillioner.config;
 
 import org.testcontainers.containers.PostgreSQLContainer;
 

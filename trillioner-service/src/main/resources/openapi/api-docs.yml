@@ -18,7 +18,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ShortTermGoalDto'
+              $ref: '#/components/schemas/ShortTermGoalRequestDto'
         required: true
       responses:
         '201':
@@ -26,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShortTermGoalDto'
+                $ref: '#/components/schemas/ShortTermGoalResponseDto'
         '400':
           description: Invalid request
           content:
@@ -58,7 +58,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
-
 components:
   schemas:
     ErrorResponseDto:
@@ -71,7 +70,30 @@ components:
           type: integer
           description: Error status code
 
-    ShortTermGoalDto:
+    ShortTermGoalRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of short-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+    ShortTermGoalResponseDto:
       type: object
       properties:
         id:
