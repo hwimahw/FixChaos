@@ -1,11 +1,11 @@
-package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshortterm.mapper;
+package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.dhabits.fixchaos.trillioner.domain.entity.ShortTermGoal;
 import ru.dhabits.fixchaos.trillioner.domain.entity.dictionary.MainDirection;
-import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshortterm.request.ShortTermGoalCommand;
-import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshortterm.response.ShortTermGoalInfo;
+import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal.request.ShortTermGoalCommand;
+import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal.response.ShortTermGoalInfo;
 
 @Mapper(componentModel = "spring")
 public interface CreateShortTermUseCaseMapper {

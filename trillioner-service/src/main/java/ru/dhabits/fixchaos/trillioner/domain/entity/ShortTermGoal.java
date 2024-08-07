@@ -35,7 +35,7 @@ public class ShortTermGoal {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne()
     @JoinColumn(name = "main_direction_id")
     private MainDirection mainDirection;
 }

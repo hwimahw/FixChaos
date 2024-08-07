@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshortterm;
+package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal;
 
 import com.dhabits.code.fixchaos.trillioner.dto.ShortTermGoalRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,16 +16,12 @@ import ru.dhabits.fixchaos.trillioner.error.EntityAlreadyExistsOrDoesNotExistExc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dhabits.fixchaos.trillioner.commons.TestData.END_DATE;
-import static ru.dhabits.fixchaos.trillioner.commons.TestData.GOAL_NAME;
-import static ru.dhabits.fixchaos.trillioner.commons.TestData.MAIN_DIRECTION;
-import static ru.dhabits.fixchaos.trillioner.commons.TestData.START_DATE;
-import static ru.dhabits.fixchaos.trillioner.commons.TestData.WRONG_MAIN_DIRECTION;
+import static ru.dhabits.fixchaos.trillioner.commons.TestData.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class CreateShortTermUseCaseTest extends TestConfigHelper {
+public class CreateShortTermGoalUseCaseTest extends TestConfigHelper {
 
     @Autowired
     private MockMvc mockMvc;
@@ -44,7 +40,7 @@ public class CreateShortTermUseCaseTest extends TestConfigHelper {
                 .andExpect(jsonPath("$.name").value(GOAL_NAME))
                 .andExpect(jsonPath("$.startDate").value(START_DATE.toString()))
                 .andExpect(jsonPath("$.endDate").value(END_DATE.toString()))
-                .andExpect(jsonPath("$.mainDirection").value(MAIN_DIRECTION));
+                .andExpect(jsonPath("$.mainDirection").value(MAIN_DIRECTION_CODE));
     }
 
     @Test
@@ -71,7 +67,7 @@ public class CreateShortTermUseCaseTest extends TestConfigHelper {
         shortTermGoalRequestDto.setName(GOAL_NAME);
         shortTermGoalRequestDto.setStartDate(START_DATE);
         shortTermGoalRequestDto.setEndDate(END_DATE);
-        shortTermGoalRequestDto.setMainDirection(MAIN_DIRECTION);
+        shortTermGoalRequestDto.setMainDirection(MAIN_DIRECTION_CODE);
 
         return shortTermGoalRequestDto;
     }
@@ -81,7 +77,7 @@ public class CreateShortTermUseCaseTest extends TestConfigHelper {
         shortTermGoalRequestDto.setName(GOAL_NAME);
         shortTermGoalRequestDto.setStartDate(START_DATE);
         shortTermGoalRequestDto.setEndDate(END_DATE);
-        shortTermGoalRequestDto.setMainDirection(WRONG_MAIN_DIRECTION);
+        shortTermGoalRequestDto.setMainDirection(WRONG_MAIN_DIRECTION_CODE);
 
         return shortTermGoalRequestDto;
     }
