@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.trillioner.config.TestConfigHelper;
 import ru.dhabits.fixchaos.trillioner.error.EntityAlreadyExistsOrDoesNotExistException;
@@ -16,11 +17,16 @@ import ru.dhabits.fixchaos.trillioner.error.EntityAlreadyExistsOrDoesNotExistExc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dhabits.fixchaos.trillioner.commons.TestData.*;
+import static ru.dhabits.fixchaos.trillioner.commons.TestData.END_DATE;
+import static ru.dhabits.fixchaos.trillioner.commons.TestData.GOAL_NAME;
+import static ru.dhabits.fixchaos.trillioner.commons.TestData.MAIN_DIRECTION_CODE;
+import static ru.dhabits.fixchaos.trillioner.commons.TestData.START_DATE;
+import static ru.dhabits.fixchaos.trillioner.commons.TestData.WRONG_MAIN_DIRECTION_CODE;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext
 public class CreateShortTermGoalUseCaseTest extends TestConfigHelper {
 
     @Autowired

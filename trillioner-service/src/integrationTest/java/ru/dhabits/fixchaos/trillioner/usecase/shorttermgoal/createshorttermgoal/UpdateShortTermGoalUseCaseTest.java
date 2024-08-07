@@ -1,6 +1,5 @@
 package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal;
 
-import com.dhabits.code.fixchaos.trillioner.dto.ShortTermGoalRequestDto;
 import com.dhabits.code.fixchaos.trillioner.dto.UpdateShortTermGoalRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.trillioner.config.TestConfigHelper;
 import ru.dhabits.fixchaos.trillioner.domain.entity.ShortTermGoal;
@@ -39,6 +39,7 @@ import static ru.dhabits.fixchaos.trillioner.commons.TestData.WRONG_MAIN_DIRECTI
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DirtiesContext
 public class UpdateShortTermGoalUseCaseTest extends TestConfigHelper {
 
     @Autowired
