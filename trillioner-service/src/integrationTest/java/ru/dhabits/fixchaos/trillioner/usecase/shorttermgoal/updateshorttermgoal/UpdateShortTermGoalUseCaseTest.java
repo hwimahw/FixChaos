@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal;
+package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.updateshorttermgoal;
 
 import com.dhabits.code.fixchaos.trillioner.dto.UpdateShortTermGoalRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

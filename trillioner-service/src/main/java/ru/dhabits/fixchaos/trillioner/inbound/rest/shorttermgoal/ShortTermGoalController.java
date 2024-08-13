@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import ru.dhabits.fixchaos.trillioner.inbound.rest.shorttermgoal.createshorttermgoal.mapper.CreateShortTermGoalMapper;
 import ru.dhabits.fixchaos.trillioner.inbound.rest.shorttermgoal.updateshorttermgoal.UpdateShortTermGoalMapper;
 import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.createshorttermgoal.CreateShortTermGoalUseCase;
+import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.deleteshorttermgoal.DeleteShortTermGoalUseCase;
 import ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.updateshorttermgoal.UpdateShortTermGoalUseCase;
 
 import java.util.UUID;
@@ -25,11 +26,19 @@ public class ShortTermGoalController implements ShortTermGoalApi {
     private final UpdateShortTermGoalUseCase updateShortTermGoalUseCase;
     private final UpdateShortTermGoalMapper updateShortTermGoalMapper;
 
+    private final DeleteShortTermGoalUseCase deleteShortTermGoalUseCase;
+
     @Override
     public ResponseEntity<ShortTermGoalResponseDto> createShortTermGoal(ShortTermGoalRequestDto shortTermGoalRequestDto) {
         var shortTermGoalCommand = createShortTermGoalMapper.toShortTermGoalCommand(shortTermGoalRequestDto);
         var shortTermGoalInfo = createShortTermGoalUseCase.execute(shortTermGoalCommand);
         return ResponseEntity.ok(createShortTermGoalMapper.toShortTermGoalResponseDto(shortTermGoalInfo));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteShortTermGoal(UUID id) {
+        deleteShortTermGoalUseCase.execute(id);
+        return ResponseEntity.ok().build();
     }
 
     @Override
