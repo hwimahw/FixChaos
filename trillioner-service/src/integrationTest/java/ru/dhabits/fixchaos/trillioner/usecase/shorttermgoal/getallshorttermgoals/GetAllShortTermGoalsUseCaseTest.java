@@ -1,7 +1,7 @@
-package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.getshorttermgoal;
+package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.getallshorttermgoals;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,10 +15,8 @@ import ru.dhabits.fixchaos.trillioner.domain.entity.ShortTermGoal;
 import ru.dhabits.fixchaos.trillioner.domain.entity.dictionary.MainDirection;
 import ru.dhabits.fixchaos.trillioner.domain.repository.ShortTermGoalRepository;
 import ru.dhabits.fixchaos.trillioner.domain.repository.dictionary.MainDirectionRepository;
-import ru.dhabits.fixchaos.trillioner.error.EntityAlreadyExistsOrDoesNotExistException;
 import ru.dhabits.fixchaos.trillioner.service.DictionaryService;
 
-import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +29,7 @@ import static ru.dhabits.fixchaos.trillioner.commons.TestData.START_DATE;
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext
-public class GetShortTermGoalUseCaseTest extends TestConfigHelper {
+public class GetAllShortTermGoalsUseCaseTest extends TestConfigHelper {
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,31 +48,32 @@ public class GetShortTermGoalUseCaseTest extends TestConfigHelper {
 
     @Test
     public void execute_Successful() throws Exception {
-        var shortTermGoal = shortTermGoalRepository.save(createShortTermGoal());
+        shortTermGoalRepository.save(createShortTermGoal());
+        shortTermGoalRepository.save(createShortTermGoal());
         mockMvc.perform(
-                        get("/v1/short-term-goal/{id}", shortTermGoal.getId())
+                        get("/v1/short-term-goal")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(GOAL_NAME))
-                .andExpect(jsonPath("$.startDate").value(START_DATE.toString()))
-                .andExpect(jsonPath("$.endDate").value(END_DATE.toString()))
-                .andExpect(jsonPath("$.mainDirection").value(MAIN_DIRECTION_CODE));
+                .andExpect(jsonPath("$.content", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$.totalElements").value(2))
+                .andExpect(jsonPath("$.totalPages").value(1))
+                .andExpect(jsonPath("$.numberOfElements").value(2))
+                .andExpect(jsonPath("$.number").value(0));
     }
 
     @Test
-    public void execute_WithNotExistingShortTermGoalThrowsException() throws Exception {
+    public void execute_SuccessfulWithOutContent() throws Exception {
         mockMvc.perform(
-                        get("/v1/short-term-goal/{id}", UUID.randomUUID().toString())
+                        get("/v1/short-term-goal")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().is4xxClientError())
-                .andExpect(
-                        result -> Assertions.assertInstanceOf(
-                                EntityAlreadyExistsOrDoesNotExistException.class,
-                                result.getResolvedException()
-                        )
-                );
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content").isEmpty())
+                .andExpect(jsonPath("$.totalElements").value(0))
+                .andExpect(jsonPath("$.totalPages").value(0))
+                .andExpect(jsonPath("$.numberOfElements").value(0))
+                .andExpect(jsonPath("$.number").value(0));
     }
 
     private ShortTermGoal createShortTermGoal() {

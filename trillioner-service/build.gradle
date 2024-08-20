@@ -12,7 +12,12 @@ openApiGenerate {
     apiPackage = "com.dhabits.code.fixchaos.trillioner.controller"
     modelPackage = "com.dhabits.code.fixchaos.trillioner.dto"
     invokerPackage = "com.dhabits.code.fixchaos.trillioner.api"
-    importMappings = ['LocalDate':'java.time.LocalDate']
+    importMappings = [
+            'LocalDate':'java.time.LocalDate',
+            'Pageable': 'org.springframework.data.domain.Pageable',
+            'Direction' : 'org.springframework.data.domain.Sort.Direction',
+            'NullHandling':'org.springframework.data.domain.Sort.NullHandling'
+    ]
     configOptions = [
             useSpringBoot3: "true",
             useTags: "true",
