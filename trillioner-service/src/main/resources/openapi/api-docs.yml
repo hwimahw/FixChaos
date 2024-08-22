@@ -5,8 +5,10 @@ info:
 servers:
   - url: http://localhost:8080/api/trillioner
 tags:
-  - name: Folder
-    description: Folder API
+  - name: ShortTermGoal
+    description: ShortTermGoal API
+  - name: LongTermGoal
+    description: LongTermGoal API
 paths:
   /v1/short-term-goal:
     post:
@@ -256,6 +258,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
+
+  /v1/long-term-goal:
+    post:
+      operationId: createLongTermGoal
+      summary: Create new long-term goal
+      tags:
+        - LongTermGoal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LongTermGoalRequestDto'
+        required: true
+      responses:
+        '201':
+          description: long-term goal is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermGoalResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
 components:
   schemas:
     ErrorResponseDto:
@@ -291,6 +344,29 @@ components:
           nullable: false
           description: main direction of goal
 
+    LongTermGoalRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of long-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
     ShortTermGoalResponseDto:
       type: object
       properties:
@@ -313,6 +389,31 @@ components:
           type: string
           nullable: false
           description: main direction of goal
+
+    LongTermGoalResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of long-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+
 
     UpdateShortTermGoalRequestDto:
       type: object
