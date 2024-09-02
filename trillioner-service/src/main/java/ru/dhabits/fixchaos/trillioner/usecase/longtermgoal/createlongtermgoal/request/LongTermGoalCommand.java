@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.createshorttermgoal.request;
+package ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.createlongtermgoal.request;
 
 import lombok.Getter;
 import lombok.Setter;

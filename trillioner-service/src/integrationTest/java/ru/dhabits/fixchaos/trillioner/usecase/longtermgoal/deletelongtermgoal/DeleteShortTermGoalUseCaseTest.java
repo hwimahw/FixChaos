@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.trillioner.usecase.shorttermgoal.deleteshorttermgoal;
+package ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.deletelongtermgoal;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,9 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.trillioner.config.TestConfigHelper;
-import ru.dhabits.fixchaos.trillioner.domain.entity.ShortTermGoal;
+import ru.dhabits.fixchaos.trillioner.domain.entity.LongTermGoal;
 import ru.dhabits.fixchaos.trillioner.domain.entity.dictionary.MainDirection;
-import ru.dhabits.fixchaos.trillioner.domain.repository.ShortTermGoalRepository;
+import ru.dhabits.fixchaos.trillioner.domain.repository.LongTermGoalRepository;
 import ru.dhabits.fixchaos.trillioner.domain.repository.dictionary.MainDirectionRepository;
 import ru.dhabits.fixchaos.trillioner.error.EntityAlreadyExistsOrDoesNotExistException;
 import ru.dhabits.fixchaos.trillioner.service.DictionaryService;
@@ -38,7 +38,7 @@ public class DeleteShortTermGoalUseCaseTest extends TestConfigHelper {
     private MockMvc mockMvc;
 
     @Autowired
-    private ShortTermGoalRepository shortTermGoalRepository;
+    private LongTermGoalRepository longTermGoalRepository;
 
     @Autowired
     private DictionaryService dictionaryService;
@@ -48,21 +48,21 @@ public class DeleteShortTermGoalUseCaseTest extends TestConfigHelper {
 
     @Test
     public void execute_Successful() throws Exception {
-        var shortTermGoal = shortTermGoalRepository.save(createShortTermGoal());
+        var shortTermGoal = longTermGoalRepository.save(createLongTermGoal());
         mockMvc.perform(
-                        delete("/v1/short-term-goal/{id}", shortTermGoal.getId())
+                        delete("/v1/long-term-goal/{id}", shortTermGoal.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
 
-        Optional<ShortTermGoal> shortTermGoalOptional = shortTermGoalRepository.findById(shortTermGoal.getId());
-        assertTrue(shortTermGoalOptional.isEmpty());
+        Optional<LongTermGoal> longTermGoalOptional = longTermGoalRepository.findById(shortTermGoal.getId());
+        assertTrue(longTermGoalOptional.isEmpty());
     }
 
     @Test
     public void execute_WithNotExistingShortTermGoal_ThrowsException() throws Exception {
         mockMvc.perform(
-                        delete("/v1/short-term-goal/{id}", UUID.randomUUID())
+                        delete("/v1/long-term-goal/{id}", UUID.randomUUID())
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().is4xxClientError())
@@ -74,13 +74,13 @@ public class DeleteShortTermGoalUseCaseTest extends TestConfigHelper {
                 );
     }
 
-    private ShortTermGoal createShortTermGoal() {
+    private LongTermGoal createLongTermGoal() {
         MainDirection mainDirection = dictionaryService.getEntity(MAIN_DIRECTION_CODE, MainDirection.class, mainDirectionRepository);
-        ShortTermGoal shortTermGoal = new ShortTermGoal();
-        shortTermGoal.setName(GOAL_NAME);
-        shortTermGoal.setStartDate(START_DATE);
-        shortTermGoal.setEndDate(END_DATE);
-        shortTermGoal.setMainDirection(mainDirection);
-        return shortTermGoal;
+        LongTermGoal longTermGoal = new LongTermGoal();
+        longTermGoal.setName(GOAL_NAME);
+        longTermGoal.setStartDate(START_DATE);
+        longTermGoal.setEndDate(END_DATE);
+        longTermGoal.setMainDirection(mainDirection);
+        return longTermGoal;
     }
 }

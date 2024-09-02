@@ -3,8 +3,8 @@ package ru.dhabits.fixchaos.trillioner.inbound.rest.longtermgoal.createlongtermg
 import com.dhabits.code.fixchaos.trillioner.dto.LongTermGoalRequestDto;
 import com.dhabits.code.fixchaos.trillioner.dto.LongTermGoalResponseDto;
 import org.mapstruct.Mapper;
-import ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.createshorttermgoal.request.LongTermGoalCommand;
-import ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.createshorttermgoal.response.LongTermGoalResultDto;
+import ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.createlongtermgoal.request.LongTermGoalCommand;
+import ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.createlongtermgoal.response.LongTermGoalResultDto;
 
 @Mapper(componentModel = "spring")
 public interface CreateLongTermGoalMapper {
