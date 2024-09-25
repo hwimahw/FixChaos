@@ -309,6 +309,57 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
+    get:
+      operationId: getAllLongTermGoals
+      summary: Get long-term goals
+      tags:
+        - LongTermGoal
+      parameters:
+        - in: query
+          name: pageable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pageable'
+      responses:
+        '201':
+          description: long-term goal is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermGoalListResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
   /v1/long-term-goal/{id}:
     post:
       operationId: updateLongTermGoal
@@ -376,6 +427,56 @@ paths:
       responses:
         '200':
           description: long-term goal is deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    get:
+      operationId: getLongTermGoal
+      summary: Get a long-term goal
+      tags:
+        - LongTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '201':
+          description: long-term goal is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermGoalResponseDto'
         '400':
           description: Invalid request
           content:
@@ -596,6 +697,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShortTermGoalResponseDto'
+        totalElements:
+          type: number
+        totalPages:
+          type: number
+        number:
+          type: number
+        numberOfElements:
+          type: number
+
+    LongTermGoalListResponseDto:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/LongTermGoalResponseDto'
         totalElements:
           type: number
         totalPages:

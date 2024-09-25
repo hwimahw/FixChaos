@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.deleteshorttermgoal;
+package ru.dhabits.fixchaos.trillioner.usecase.longtermgoal.deletelongtermgoal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
