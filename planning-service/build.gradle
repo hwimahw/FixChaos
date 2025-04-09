@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id "org.openapi.generator" version "${openApiGeneratorVersion}"
+}
+
+openApiGenerate {
+    inputSpec = "$project.rootDir/planning-service/src/main/resources/openapi/api-docs.yml".toString()
+    outputDir = "$buildDir/generated/openapi"
+    generateModelDocumentation = true
+    generatorName = "spring"
+    library = "spring-boot"
+    apiPackage = "com.dhabits.code.fixchaos.planning.controller"
+    modelPackage = "com.dhabits.code.fixchaos.planning.dto"
+    invokerPackage = "com.dhabits.code.fixchaos.planning.api"
+    importMappings = [
+            'LocalDate':'java.time.LocalDate',
+            'Pageable': 'org.springframework.data.domain.Pageable',
+            'Direction' : 'org.springframework.data.domain.Sort.Direction',
+            'NullHandling':'org.springframework.data.domain.Sort.NullHandling'
+    ]
+    configOptions = [
+            useSpringBoot3: "true",
+            useTags: "true",
+            java8: "false",
+            dateLibrary: "java8",
+            interfaceOnly: "true",
+            skipDefaultInterface: "true",
+            hideGenerationTimestamp: "true",
+            serializableModel: "true",
+            booleanGetterPrefix: "is",
+            openApiNullable: "true",
+    ]
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDir("${openApiGenerate.outputDir.get()}/src/main/java")
+        }
+    }
+}
+
+
+tasks.compileJava.dependsOn(tasks.openApiGenerate)
+dependencies {
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiUiVersion}"
+    implementation "org.liquibase:liquibase-core"
+    implementation "org.openapitools:jackson-databind-nullable:${openApiToolsVersion}"
+    testImplementation "org.testcontainers:postgresql:${testcontainersPostgresqlVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersPostgresqlVersion}"
+    testImplementation "org.assertj:assertj-core:${assertJVersion}"
+    implementation project(':database:planning-service-db')
+}
+
+repositories {
+    mavenCentral()
+}
+
+bootJar {
+    archiveFileName = "${project.name}.jar"
+}
+
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
+

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: /2024/0226-1/000000_initial.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: /2024/0226-1/create-folder-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: /2024/0226-1/create-notebook-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: /2024/0226-1/create-note-table.yaml
+      relativeToChangelogFile: true

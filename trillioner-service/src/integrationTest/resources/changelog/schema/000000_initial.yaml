@@ -1,7 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 036645cd-7538-4dd0-9b1f-db13510f3f22
-      author: Irzakhanov Mansur
-      changes:
-        - sql:
-            sql: CREATE SCHEMA IF NOT EXISTS trillioner

@@ -4,7 +4,7 @@
 #в рамках обычных запросов, происходящих в тестируемых методах
 spring:
   liquibase:
-    change-log: classpath:integrationTestdb/changelog/db.changelog-master.yaml
+    change-log: classpath:changelog/db.changelog-master.yaml
   datasource:
     url: ${CONTAINER.URL}
     username: ${CONTAINER.USERNAME}

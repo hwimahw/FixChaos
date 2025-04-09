@@ -45,6 +45,8 @@ dependencies {
     testImplementation "org.testcontainers:postgresql:${testcontainersPostgresqlVersion}"
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersPostgresqlVersion}"
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
+    implementation project(':database:notepad-service-db')
+
 }
 
 repositories {

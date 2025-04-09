@@ -1,4 +1,9 @@
 rootProject.name = 'FixChaos'
 include 'notepad-service'
-include 'trillioner-service'
+include 'planning-service'
+include 'database'
+include 'database:planning-service-db'
+findProject(':database:planning-service-db')?.name = 'planning-service-db'
+include 'database:notepad-service-db'
+findProject(':database:notepad-service-db')?.name = 'notepad-service-db'
 

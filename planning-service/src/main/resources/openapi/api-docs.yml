@@ -1,0 +1,724 @@
+openapi: 3.0.0
+info:
+  title: LifePlanner Service - OpenAPI 1.0
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/planning
+tags:
+  - name: ShortTermGoal
+    description: ShortTermGoal API
+  - name: LongTermGoal
+    description: LongTermGoal API
+paths:
+  /v1/short-term-goal:
+    post:
+      operationId: createShortTermGoal
+      summary: Create new short-term goal
+      tags:
+        - ShortTermGoal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShortTermGoalRequestDto'
+        required: true
+      responses:
+        '201':
+          description: short-term goal is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortTermGoalResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    get:
+      operationId: getAllShortTermGoals
+      summary: Get short-term goals
+      tags:
+        - ShortTermGoal
+      parameters:
+        - in: query
+          name: pageable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pageable'
+      responses:
+        '201':
+          description: short-term goal is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortTermGoalListResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+  /v1/short-term-goal/{id}:
+    post:
+      operationId: updateShortTermGoal
+      summary: Update short-term goal
+      tags:
+        - ShortTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateShortTermGoalRequestDto'
+        required: true
+      responses:
+        '200':
+          description: short-term goal is updated
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    delete:
+      operationId: deleteShortTermGoal
+      summary: Delete short-term goal
+      tags:
+        - ShortTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: short-term goal is deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    get:
+      operationId: getShortTermGoal
+      summary: Get a short-term goal
+      tags:
+        - ShortTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '201':
+          description: short-term goal is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortTermGoalResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+  /v1/long-term-goal:
+    post:
+      operationId: createLongTermGoal
+      summary: Create new long-term goal
+      tags:
+        - LongTermGoal
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LongTermGoalRequestDto'
+        required: true
+      responses:
+        '201':
+          description: long-term goal is created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermGoalResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    get:
+      operationId: getAllLongTermGoals
+      summary: Get long-term goals
+      tags:
+        - LongTermGoal
+      parameters:
+        - in: query
+          name: pageable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pageable'
+      responses:
+        '201':
+          description: long-term goal is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermGoalListResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
+  /v1/long-term-goal/{id}:
+    post:
+      operationId: updateLongTermGoal
+      summary: Update long-term goal
+      tags:
+        - LongTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLongTermGoalRequestDto'
+        required: true
+      responses:
+        '200':
+          description: short-term goal is updated
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+    delete:
+      operationId: deleteLongTermGoal
+      summary: Delete long-term goal
+      tags:
+        - LongTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: long-term goal is deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+    get:
+      operationId: getLongTermGoal
+      summary: Get a long-term goal
+      tags:
+        - LongTermGoal
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '201':
+          description: long-term goal is gotten
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LongTermGoalResponseDto'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Not authorised
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '405':
+          description: Method is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+
+
+
+components:
+  schemas:
+    ErrorResponseDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        code:
+          type: integer
+          description: Error status code
+
+    ShortTermGoalRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of short-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+    LongTermGoalRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of long-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+    ShortTermGoalResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of short-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+    LongTermGoalResponseDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of long-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+
+
+    UpdateShortTermGoalRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of short-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+    UpdateLongTermGoalRequestDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: false
+          description: Name of long-term goal
+        startDate:
+          type: LocalDate
+          nullable: false
+          description: end date
+        endDate:
+          type: LocalDate
+          nullable: false
+          description: start date
+        mainDirection:
+          type: string
+          nullable: false
+          description: main direction of goal
+
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+        sort:
+          type: Sort
+    Sort:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    Order:
+      type: object
+      properties:
+        direction:
+          type: Direction
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+        nullHandling:
+          type: NullHandling
+
+    ShortTermGoalListResponseDto:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShortTermGoalResponseDto'
+        totalElements:
+          type: number
+        totalPages:
+          type: number
+        number:
+          type: number
+        numberOfElements:
+          type: number
+
+    LongTermGoalListResponseDto:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/LongTermGoalResponseDto'
+        totalElements:
+          type: number
+        totalPages:
+          type: number
+        number:
+          type: number
+        numberOfElements:
+          type: number
+
