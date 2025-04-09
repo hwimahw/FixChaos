@@ -72,10 +72,6 @@ subprojects { ->
 
     }
 
-    test {
-        useJUnitPlatform()
-    }
-
     sourceSets {
         integrationTest {
             java.srcDir file("src/integrationTest/java")
