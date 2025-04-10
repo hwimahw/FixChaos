@@ -13,5 +13,4 @@ public interface NotebookMapper {
     NotebookDto mapToNotebookDto(Notebook notebook);
 
     List<NotebookDto> mapToNotebookDtoList(List<Notebook> notebooks);
-
 }

@@ -2,6 +2,7 @@ package ru.dhabits.fixchaos.notepad.service.impl;
 
 import com.dhabits.code.fixchaos.notepad.dto.ListNoteDto;
 import com.dhabits.code.fixchaos.notepad.dto.NoteDto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.dhabits.fixchaos.notepad.db.model.Note;
@@ -24,6 +25,7 @@ public class NoteServiceImpl implements NoteService {
     private final NotebookRepository notebookRepository;
 
     @Override
+    @Transactional
     public NoteDto createNote(NoteDto noteDto) {
         Optional<Notebook> notebookOptional = notebookRepository.findById(noteDto.getNotebookId());
         if (notebookOptional.isEmpty()) {

@@ -34,6 +34,5 @@ public class NotebookController implements NotebookApi {
     public ResponseEntity<Void> updateNotebook(String id, @Valid String name) {
         notebookService.updateNotebook(id, name);
         return ResponseEntity.ok().build();
-
     }
 }

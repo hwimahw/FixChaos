@@ -29,6 +29,7 @@ public class NotebookServiceImpl implements NotebookService {
     private final NotebookRepository notebookRepository;
 
     @Override
+    @Transactional
     public NotebookDto createNotebook(NotebookDto notebookDto) {
         Optional<Folder> folderOptional = folderRepository.findById(notebookDto.getFolderId());
         if (folderOptional.isEmpty()) {

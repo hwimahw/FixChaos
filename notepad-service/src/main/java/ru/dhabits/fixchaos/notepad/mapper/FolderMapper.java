@@ -9,8 +9,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface FolderMapper {
     Folder mapToFolder(FolderDto folderDto);
+
     List<FolderDto> mapToFolderDtoList(List<Folder> folders);
 
     FolderDto mapToFolderDto(Folder folder);
-
 }
