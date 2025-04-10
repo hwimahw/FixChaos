@@ -12,7 +12,9 @@ public interface FolderRepository extends CrudRepository<Folder, UUID> {
 
     Boolean existsByName(String name);
 
+    @EntityGraph(attributePaths = "notebooks")
     List<Folder> findAll();
+
     @EntityGraph(attributePaths = "notebooks.notes")
     Optional<Folder> findById(UUID id);
 }

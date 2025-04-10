@@ -49,7 +49,7 @@ public class FolderServiceImpl implements FolderService {
                     folderRepository.save(folder);
                 },
                 () -> {
-                    throw new EntityAlreadyExistsOrDoesNotExistException();
+                    throw new EntityAlreadyExistsOrDoesNotExistException("Такой папки не существует");
                 }
         );
     }

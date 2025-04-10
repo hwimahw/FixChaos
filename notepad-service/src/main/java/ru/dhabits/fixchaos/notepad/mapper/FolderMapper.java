@@ -6,7 +6,7 @@ import ru.dhabits.fixchaos.notepad.db.model.Folder;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {NotebookMapper.class})
 public interface FolderMapper {
     Folder mapToFolder(FolderDto folderDto);
 
