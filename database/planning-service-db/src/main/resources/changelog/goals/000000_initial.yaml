@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: e16bab0b-f765-4f7f-a474-9838be528a3d
+      author: Irzakhanov Mansur
+      changes:
+        - sql:
+            sql: CREATE TYPE goal_type_enum AS ENUM ('SHORT_TERM', 'LONG_TERM')
+        - sql:
+            sql: CREATE CAST (CHARACTER VARYING as goal_type_enum) WITH INOUT AS IMPLICIT
+        - createTable:
+            tableName: goals
+            schemaName: planning
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: goal_type
+                  type: goal_type_enum
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: main_direction_id
+                  type: varchar
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_goals_main_directions
+                    references: planning.main_directions(code)
+              - column:
+                  name: parent_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_goals_goals
+                    references: planning.goals(id)

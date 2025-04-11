@@ -13,6 +13,6 @@ import org.hibernate.annotations.Immutable;
 @Setter
 @Immutable
 @Accessors(chain = true)
-public class MainDirection extends BaseDictionary{
+public class MainDirection extends BaseDictionary {
 
 }

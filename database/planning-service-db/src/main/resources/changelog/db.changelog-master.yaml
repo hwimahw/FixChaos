@@ -6,9 +6,6 @@ databaseChangeLog:
       file: main_directions/000000_initial.yaml
       relativeToChangelogFile: true
   - include:
-      file: main_directions/000000_initial_data.yaml
-      relativeToChangelogFile: true
-  - include:
       file: long_term_goals/000000_initial.yaml
       relativeToChangelogFile: true
   - include:
@@ -16,4 +13,10 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: change_thoughts/000000_initial.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: change_thoughts/000000_initial.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: goals/000000_initial.yaml
       relativeToChangelogFile: true

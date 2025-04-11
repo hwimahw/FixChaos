@@ -24,6 +24,7 @@ ext {
     securityTestVersion = '6.2.3'
     hamcrestVersion = '2.2'
     assertJVersion = '3.26.0'
+    hibernateTypesVersion = '2.21.1'
 }
 
 subprojects { ->
@@ -69,7 +70,7 @@ subprojects { ->
         testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
         implementation "org.springframework.boot:spring-boot-starter-security:${securityVersion}"
         testImplementation "org.springframework.security:spring-security-test:${securityTestVersion}"
-
+        implementation "com.vladmihalcea:hibernate-types-60:${hibernateTypesVersion}"
     }
 
     sourceSets {

@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.service.FolderService;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
