@@ -8,10 +8,15 @@ databaseChangeLog:
             schemaName: planning
             columns:
               - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
                   name: code
                   type: varchar
                   constraints:
-                    primaryKey: true
                     nullable: false
               - column:
                   name: name

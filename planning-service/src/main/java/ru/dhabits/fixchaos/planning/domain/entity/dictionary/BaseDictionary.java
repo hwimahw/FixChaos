@@ -1,6 +1,5 @@
 package ru.dhabits.fixchaos.planning.domain.entity.dictionary;
 
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BaseDictionary {
-    @Id
-    private String code;
-    private String name;
+
 }

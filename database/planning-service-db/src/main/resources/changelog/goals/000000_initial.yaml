@@ -39,11 +39,11 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: main_direction_id
-                  type: varchar
+                  type: uuid
                   constraints:
                     nullable: false
                     foreignKeyName: fk_goals_main_directions
-                    references: planning.main_directions(code)
+                    references: planning.main_directions(id)
               - column:
                   name: parent_id
                   type: uuid

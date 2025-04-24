@@ -508,8 +508,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponseDto'
 
-
-
 components:
   schemas:
     ErrorResponseDto:
@@ -613,8 +611,6 @@ components:
           type: string
           nullable: false
           description: main direction of goal
-
-
 
     UpdateShortTermGoalRequestDto:
       type: object
