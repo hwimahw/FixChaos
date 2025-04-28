@@ -10,9 +10,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.dhabits.fixchaos.planning.config.TestConfigHelper;
 import ru.dhabits.fixchaos.planning.domain.entity.Goal;
-import ru.dhabits.fixchaos.planning.domain.entity.dictionary.MainDirection;
+import ru.dhabits.fixchaos.planning.domain.entity.dictionary.Direction;
 import ru.dhabits.fixchaos.planning.domain.repository.GoalRepository;
-import ru.dhabits.fixchaos.planning.domain.repository.dictionary.MainDirectionRepository;
+import ru.dhabits.fixchaos.planning.domain.repository.DirectionRepository;
 import ru.dhabits.fixchaos.planning.enumeration.GoalType;
 import ru.dhabits.fixchaos.planning.service.DictionaryService;
 
@@ -34,12 +34,11 @@ import static ru.dhabits.fixchaos.planning.commons.TestData.START_DATE;
 @DirtiesContext
 public class GetSubtreeUseCaseTest extends TestConfigHelper {
 
-
     @Autowired
     private DictionaryService dictionaryService;
 
     @Autowired
-    private MainDirectionRepository mainDirectionRepository;
+    private DirectionRepository mainDirectionRepository;
 
     @Autowired
     private GoalRepository goalRepository;
@@ -56,28 +55,28 @@ public class GetSubtreeUseCaseTest extends TestConfigHelper {
                 .andExpect(jsonPath("$.name").value(GOAL_NAME_1))
                 .andExpect(jsonPath("$.startDate").value(START_DATE.toString()))
                 .andExpect(jsonPath("$.endDate").value(END_DATE.toString()))
-                .andExpect(jsonPath("$.mainDirection").value(MAIN_DIRECTION_CODE_1))
+                .andExpect(jsonPath("$.direction").value(MAIN_DIRECTION_CODE_1))
                 .andExpect(jsonPath("$.goals", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$.goals[0].name").value(GOAL_NAME_2))
-                .andExpect(jsonPath("$.goals[0].mainDirection").value(MAIN_DIRECTION_CODE_2))
+                .andExpect(jsonPath("$.goals[0].direction").value(MAIN_DIRECTION_CODE_2))
                 .andExpect(jsonPath("$.goals[0].startDate").value(START_DATE.toString()))
                 .andExpect(jsonPath("$.goals[0].endDate").value(END_DATE.toString()));
     }
 
     private Goal createAndSaveGoalWithOneChildGoal() {
-        MainDirection mainDirection1 = new MainDirection();
-        mainDirection1.setCode(MAIN_DIRECTION_CODE_1);
-        mainDirection1.setName(MAIN_DIRECTION_NAME_1);
-        mainDirectionRepository.save(mainDirection1);
+        Direction direction1 = new Direction();
+        direction1.setCode(MAIN_DIRECTION_CODE_1);
+        direction1.setName(MAIN_DIRECTION_NAME_1);
+        mainDirectionRepository.save(direction1);
 
-        MainDirection mainDirection2 = new MainDirection();
-        mainDirection2.setCode(MAIN_DIRECTION_CODE_2);
-        mainDirection2.setName(MAIN_DIRECTION_NAME_2);
-        mainDirectionRepository.save(mainDirection2);
+        Direction direction2 = new Direction();
+        direction2.setCode(MAIN_DIRECTION_CODE_2);
+        direction2.setName(MAIN_DIRECTION_NAME_2);
+        mainDirectionRepository.save(direction2);
 
         Goal goal1 = new Goal()
                 .setName(GOAL_NAME_1)
-                .setMainDirection(mainDirection1)
+                .setDirection(direction1)
                 .setGoalType(GoalType.LONG_TERM)
                 .setStartDate(START_DATE)
                 .setEndDate(END_DATE);
@@ -86,7 +85,7 @@ public class GetSubtreeUseCaseTest extends TestConfigHelper {
 
         Goal goal2 = new Goal()
                 .setName(GOAL_NAME_2)
-                .setMainDirection(mainDirection2)
+                .setDirection(direction2)
                 .setGoalType(GoalType.LONG_TERM)
                 .setStartDate(START_DATE)
                 .setEndDate(END_DATE)

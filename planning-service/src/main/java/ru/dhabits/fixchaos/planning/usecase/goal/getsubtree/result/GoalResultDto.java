@@ -17,7 +17,7 @@ public class GoalResultDto {
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String mainDirection;
+    private String direction;
     private GoalType goalType;
     private List<GoalResultDto> goals;
 }

@@ -38,15 +38,15 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: main_direction_id
-                  type: uuid
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_goals_main_directions
-                    references: planning.main_directions(id)
-              - column:
                   name: parent_id
                   type: uuid
                   constraints:
                     foreignKeyName: fk_goals_goals
                     references: planning.goals(id)
+              - column:
+                  name: direction_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_goals_directions
+                    references: planning.directions(id)
+                    nullable: false

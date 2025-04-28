@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.response;
+package ru.dhabits.fixchaos.planning.inbound.rest.goal.getaboveparttreeandbelowalltree.response;
 
 import lombok.Getter;
 import lombok.Setter;

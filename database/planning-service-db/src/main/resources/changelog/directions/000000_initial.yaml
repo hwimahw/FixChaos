@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Irzakhanov Mansur
       changes:
         - createTable:
-            tableName: main_directions
+            tableName: directions
             schemaName: planning
             columns:
               - column:
@@ -23,3 +23,9 @@ databaseChangeLog:
                   type: varchar
                   constraints:
                     nullable: false
+              - column:
+                  name: parent_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_directions_directions
+                    references: planning.directions(id)

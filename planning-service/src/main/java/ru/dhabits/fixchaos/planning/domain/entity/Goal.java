@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
-import ru.dhabits.fixchaos.planning.domain.entity.dictionary.MainDirection;
+import ru.dhabits.fixchaos.planning.domain.entity.dictionary.Direction;
 import ru.dhabits.fixchaos.planning.enumeration.GoalType;
 
 import java.time.LocalDate;
@@ -56,6 +56,6 @@ public class Goal {
     private Goal goal;
 
     @ManyToOne
-    @JoinColumn(name = "main_direction_id")
-    private MainDirection mainDirection;
+    @JoinColumn(name = "direction_id")
+    private Direction direction;
 }
