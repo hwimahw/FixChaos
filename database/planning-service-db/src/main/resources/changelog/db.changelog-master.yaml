@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       file: goals/000000_initial.yaml
       relativeToChangelogFile: true
+  - include:
+      file: instruments/000000_initial.yaml
+      relativeToChangelogFile: true

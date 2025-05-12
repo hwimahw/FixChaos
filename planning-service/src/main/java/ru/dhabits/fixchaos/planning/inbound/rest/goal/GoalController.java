@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree;
+package ru.dhabits.fixchaos.planning.inbound.rest.goal;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

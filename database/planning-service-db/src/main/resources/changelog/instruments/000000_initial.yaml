@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5f4b9451-338c-432a-a841-577ed2bb2439
+      author: Irzakhanov Mansur
+      changes:
+        - createTable:
+            tableName: instruments
+            schemaName: planning
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: goal_id
+                  type: uuid
+                  constraints:
+                    foreignKeyName: fk_instruments_goals
+                    references: planning.goals(id)

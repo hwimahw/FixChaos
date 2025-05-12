@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
-import ru.dhabits.fixchaos.planning.domain.entity.dictionary.Direction;
+import ru.dhabits.fixchaos.planning.domain.entity.dictionary.Instrument;
 import ru.dhabits.fixchaos.planning.enumeration.GoalType;
 
 import java.time.LocalDate;
@@ -58,4 +58,7 @@ public class Goal {
     @ManyToOne
     @JoinColumn(name = "direction_id")
     private Direction direction;
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "goal")
+    private List<Instrument> instruments;
 }
