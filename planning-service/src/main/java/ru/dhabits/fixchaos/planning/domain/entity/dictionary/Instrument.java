@@ -16,7 +16,7 @@ import ru.dhabits.fixchaos.planning.domain.entity.Goal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "DIRECTIONS", schema = "planning")
+@Table(name = "INSTRUMENTS", schema = "planning")
 @Getter
 @Setter
 @Immutable

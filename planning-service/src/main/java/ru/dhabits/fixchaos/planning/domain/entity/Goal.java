@@ -59,6 +59,6 @@ public class Goal {
     @JoinColumn(name = "direction_id")
     private Direction direction;
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "goal")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "goal")
     private List<Instrument> instruments;
 }
