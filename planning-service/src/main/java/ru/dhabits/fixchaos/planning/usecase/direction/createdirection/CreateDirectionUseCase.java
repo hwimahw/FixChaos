@@ -25,6 +25,7 @@ public class CreateDirectionUseCase {
         }
         Direction direction = new Direction()
                 .setDirection(parentDirection)
+                .setDescription(directionCommand.getDescription())
                 .setCode(directionCommand.getCode())
                 .setName(directionCommand.getName());
         return directionRepository.save(direction);

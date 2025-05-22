@@ -14,7 +14,7 @@ import ru.dhabits.fixchaos.planning.config.TestConfigHelper;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
 import ru.dhabits.fixchaos.planning.domain.repository.DirectionRepository;
 import ru.dhabits.fixchaos.planning.error.EntityAlreadyExistsOrDoesNotExistException;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.createdirection.request.DirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.DirectionRequestDto;
 
 import java.util.UUID;
 
@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dhabits.fixchaos.planning.commons.TestData.CODE;
+import static ru.dhabits.fixchaos.planning.commons.TestData.DESCRIPTION;
 import static ru.dhabits.fixchaos.planning.commons.TestData.NAME;
 
 @SpringBootTest
@@ -41,13 +42,17 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
 
     @Test
     public void execute_Successful_WithNoParentDirection() throws Exception {
-        DirectionRequestDto directionRequestDto = new DirectionRequestDto().setCode("CODE").setName("NAME");
+        DirectionRequestDto directionRequestDto = new DirectionRequestDto()
+                .setCode("CODE")
+                .setName("NAME")
+                .setDescription("DESCRIPTION");
 
         mockMvc.perform(post("/v1/direction").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(directionRequestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(CODE))
                 .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.description").value(DESCRIPTION))
                 .andExpect(jsonPath("$.parentDirection").isEmpty());
     }
 
@@ -57,6 +62,7 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
         DirectionRequestDto directionRequestDto = new DirectionRequestDto()
                 .setCode("CODE")
                 .setName("NAME")
+                .setDescription("DESCRIPTION")
                 .setParentId(parentDirection.getId());
 
         mockMvc.perform(post("/v1/direction").contentType(MediaType.APPLICATION_JSON)
@@ -64,6 +70,7 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(CODE))
                 .andExpect(jsonPath("$.name").value(NAME))
+                .andExpect(jsonPath("$.description").value(DESCRIPTION))
                 .andExpect(jsonPath("$.parentDirection.code").value("PARENT_CODE"))
                 .andExpect(jsonPath("$.parentDirection.name").value("PARENT_NAME"))
                 .andExpect(jsonPath("$.parentDirection.id").value(parentDirection.getId().toString()));
@@ -74,6 +81,7 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
         DirectionRequestDto directionRequestDto = new DirectionRequestDto()
                 .setCode("CODE")
                 .setName("NAME")
+                .setDescription("DESCRIPTION")
                 .setParentId(UUID.fromString("3cc46125-0fe8-404a-9dd4-be9f29a3052f"));
 
         mockMvc.perform(post("/v1/direction").contentType(MediaType.APPLICATION_JSON)

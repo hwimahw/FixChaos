@@ -12,5 +12,6 @@ import java.util.UUID;
 public class DirectionCommand {
     private String code;
     private String name;
+    private String description;
     private UUID parentId;
 }

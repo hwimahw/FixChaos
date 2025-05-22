@@ -24,6 +24,9 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: description
+                  type: varchar
+              - column:
                   name: parent_id
                   type: uuid
                   constraints:

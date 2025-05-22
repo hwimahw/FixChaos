@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.createdirection.mapper.CreateDirectionMapper;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.createdirection.request.DirectionRequestDto;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.createdirection.response.DirectionResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.mapper.CreateDirectionMapper;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.DirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response.DirectionResponseDto;
 import ru.dhabits.fixchaos.planning.usecase.direction.createdirection.CreateDirectionUseCase;
 import ru.dhabits.fixchaos.planning.usecase.direction.deletedirection.DeleteDirectionUseCase;
 
