@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Immutable;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import java.util.UUID;
 @Table(name = "DIRECTIONS", schema = "planning")
 @Getter
 @Setter
-@Immutable
 @Accessors(chain = true)
 public class Direction {
     @Id

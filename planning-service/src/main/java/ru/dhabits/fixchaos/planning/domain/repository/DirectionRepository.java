@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface DirectionRepository extends JpaRepository<Direction, UUID> {
 
-    @EntityGraph(attributePaths = "goals")
+    @EntityGraph(attributePaths = {"goals", "direction"})
     Optional<Direction> findById(UUID id);
 }

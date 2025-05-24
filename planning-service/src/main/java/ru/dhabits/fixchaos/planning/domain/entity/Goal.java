@@ -1,6 +1,5 @@
 package ru.dhabits.fixchaos.planning.domain.entity;
 
-import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +15,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import ru.dhabits.fixchaos.planning.domain.entity.dictionary.Instrument;
 import ru.dhabits.fixchaos.planning.enumeration.GoalType;
 
@@ -45,7 +45,7 @@ public class Goal {
 
     @Column(name = "goal_type")
     @Enumerated(value = EnumType.STRING)
-    @Type(PostgreSQLEnumType.class)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     private GoalType goalType;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "goal")

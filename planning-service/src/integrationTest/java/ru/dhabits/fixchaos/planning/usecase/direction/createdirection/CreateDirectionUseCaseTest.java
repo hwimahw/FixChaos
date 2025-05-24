@@ -14,7 +14,7 @@ import ru.dhabits.fixchaos.planning.config.TestConfigHelper;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
 import ru.dhabits.fixchaos.planning.domain.repository.DirectionRepository;
 import ru.dhabits.fixchaos.planning.error.EntityAlreadyExistsOrDoesNotExistException;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.DirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.CreateDirectionRequestDto;
 
 import java.util.UUID;
 
@@ -42,7 +42,7 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
 
     @Test
     public void execute_Successful_WithNoParentDirection() throws Exception {
-        DirectionRequestDto directionRequestDto = new DirectionRequestDto()
+        CreateDirectionRequestDto directionRequestDto = new CreateDirectionRequestDto()
                 .setCode("CODE")
                 .setName("NAME")
                 .setDescription("DESCRIPTION");
@@ -59,7 +59,7 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
     @Test
     public void execute_Successful_WithParentDirection() throws Exception {
         Direction parentDirection = directionRepository.save(new Direction().setCode("PARENT_CODE").setName("PARENT_NAME"));
-        DirectionRequestDto directionRequestDto = new DirectionRequestDto()
+        CreateDirectionRequestDto directionRequestDto = new CreateDirectionRequestDto()
                 .setCode("CODE")
                 .setName("NAME")
                 .setDescription("DESCRIPTION")
@@ -78,7 +78,7 @@ public class CreateDirectionUseCaseTest extends TestConfigHelper {
 
     @Test
     public void executeWithException_WithParentThatDoesNotExist() throws Exception {
-        DirectionRequestDto directionRequestDto = new DirectionRequestDto()
+        CreateDirectionRequestDto directionRequestDto = new CreateDirectionRequestDto()
                 .setCode("CODE")
                 .setName("NAME")
                 .setDescription("DESCRIPTION")

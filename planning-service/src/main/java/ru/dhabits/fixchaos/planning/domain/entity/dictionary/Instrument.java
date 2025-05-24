@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Immutable;
 import ru.dhabits.fixchaos.planning.domain.entity.Goal;
 
 import java.util.UUID;
@@ -19,7 +18,6 @@ import java.util.UUID;
 @Table(name = "INSTRUMENTS", schema = "planning")
 @Getter
 @Setter
-@Immutable
 @Accessors(chain = true)
 public class Instrument {
     @Id

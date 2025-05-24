@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.planning.usecase.direction.createdirection.command;
+package ru.dhabits.fixchaos.planning.usecase.direction.updatedirection.command;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class DirectionCommand {
+public class UpdateDirectionCommand {
+    private UUID id;
     private String code;
     private String name;
     private String description;

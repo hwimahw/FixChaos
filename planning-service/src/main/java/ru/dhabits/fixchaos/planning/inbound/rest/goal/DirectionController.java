@@ -6,15 +6,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.mapper.CreateDirectionMapper;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.DirectionRequestDto;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response.DirectionResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.CreateDirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response.CreateDirectionResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.mapper.UpdateDirectionMapper;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.request.UpdateDirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.response.UpdateDirectionResponseDto;
 import ru.dhabits.fixchaos.planning.usecase.direction.createdirection.CreateDirectionUseCase;
 import ru.dhabits.fixchaos.planning.usecase.direction.deletedirection.DeleteDirectionUseCase;
+import ru.dhabits.fixchaos.planning.usecase.direction.updatedirection.UpdateDirectionUseCase;
 
 import java.util.UUID;
 
@@ -28,8 +33,13 @@ public class DirectionController {
 
     private final DeleteDirectionUseCase deleteDirectionUseCase;
 
+    private final UpdateDirectionUseCase updateDirectionUseCase;
+    private final UpdateDirectionMapper updateDirectionMapper;
+
     @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<DirectionResponseDto> createDirection(@RequestBody DirectionRequestDto directionRequestDto) {
+    public ResponseEntity<CreateDirectionResponseDto> createDirection(
+            @RequestBody CreateDirectionRequestDto directionRequestDto
+    ) {
         Direction direction = createDirectionUseCase.execute(
                 createDirectionMapper.toDirectionCommand(directionRequestDto)
         );
@@ -37,9 +47,21 @@ public class DirectionController {
     }
 
     @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<DirectionResponseDto> deleteDirection(@PathVariable UUID id) {
+    public ResponseEntity<CreateDirectionResponseDto> deleteDirection(@PathVariable UUID id) {
         deleteDirectionUseCase.execute(id);
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<UpdateDirectionResponseDto> updateDirection(
+            @PathVariable("id") UUID id,
+            @RequestBody UpdateDirectionRequestDto updateDirectionRequestDto
+    ) {
+
+        Direction direction = updateDirectionUseCase.execute(
+                updateDirectionMapper.toUpdateDirectionCommand(id, updateDirectionRequestDto)
+        );
+
+        return ResponseEntity.ok(updateDirectionMapper.toUpdateDirectionResponseDto(direction));
+    }
 }

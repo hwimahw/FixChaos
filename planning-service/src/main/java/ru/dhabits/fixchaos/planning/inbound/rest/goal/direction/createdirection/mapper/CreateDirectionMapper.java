@@ -3,15 +3,15 @@ package ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.DirectionRequestDto;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response.DirectionResponseDto;
-import ru.dhabits.fixchaos.planning.usecase.direction.createdirection.command.DirectionCommand;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.CreateDirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response.CreateDirectionResponseDto;
+import ru.dhabits.fixchaos.planning.usecase.direction.createdirection.command.CreateDirectionCommand;
 
 @Mapper(componentModel = "spring")
 public interface CreateDirectionMapper {
 
     @Mapping(target = "parentDirection", source = "direction")
-    DirectionResponseDto toDirectionResponseDto(Direction direction);
+    CreateDirectionResponseDto toDirectionResponseDto(Direction direction);
 
-    DirectionCommand toDirectionCommand(DirectionRequestDto directionRequestDto);
+    CreateDirectionCommand toDirectionCommand(CreateDirectionRequestDto directionRequestDto);
 }

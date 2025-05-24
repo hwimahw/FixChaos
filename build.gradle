@@ -10,7 +10,7 @@ repositories {
 }
 
 ext {
-    springBootVersion = "3.0.2"
+    springBootVersion = "3.4.5"
     lombokVersion = "1.18.24"
     postgresVersion = "42.5.3"
     openApiGeneratorVersion = "6.3.0"
@@ -71,6 +71,8 @@ subprojects { ->
         implementation "org.springframework.boot:spring-boot-starter-security:${securityVersion}"
         testImplementation "org.springframework.security:spring-security-test:${securityTestVersion}"
         implementation "com.vladmihalcea:hibernate-types-60:${hibernateTypesVersion}"
+        implementation 'org.hibernate.orm:hibernate-core:6.3.1.Final'
+
     }
 
     sourceSets {
