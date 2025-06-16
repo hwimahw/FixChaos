@@ -1,10 +1,10 @@
-package ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.mapper;
+package ru.dhabits.fixchaos.planning.inbound.rest.direction.updatedirection.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.request.UpdateDirectionRequestDto;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.response.UpdateDirectionResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.direction.updatedirection.response.UpdateDirectionResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.direction.updatedirection.request.UpdateDirectionRequestDto;
 import ru.dhabits.fixchaos.planning.usecase.direction.updatedirection.command.UpdateDirectionCommand;
 
 import java.util.UUID;

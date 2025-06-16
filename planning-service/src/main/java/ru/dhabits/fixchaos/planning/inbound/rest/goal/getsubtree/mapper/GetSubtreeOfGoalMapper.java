@@ -5,6 +5,6 @@ import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.response.GoalRe
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto;
 
 @Mapper(componentModel = "spring")
-public interface GetSubtreeMapper {
+public interface GetSubtreeOfGoalMapper {
     GoalResponseDto toGoalResponseDto(GoalResultDto goalResultDto);
 }

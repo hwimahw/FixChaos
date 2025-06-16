@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getaboveparttreeandbelowalltree.mapper.GetAbovePartTreeAndBelowAllTreeMapper;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.mapper.GetSubtreeMapper;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.mapper.GetSubtreeOfGoalMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.response.GoalResponseDto;
 import ru.dhabits.fixchaos.planning.usecase.goal.getaboveparttreeandbelowalltree.GetAbovePartTreeAndBelowAllTreeUseCase;
-import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.GetSubtreeUseCase;
+import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.GetSubtreeOfGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto;
 
 import java.util.UUID;
@@ -21,8 +21,8 @@ import java.util.UUID;
 @RequestMapping("/v1/goal")
 public class GoalController {
 
-    private final GetSubtreeUseCase getSubtreeUseCase;
-    private final GetSubtreeMapper getSubtreeMapper;
+    private final GetSubtreeOfGoalUseCase getSubtreeUseCase;
+    private final GetSubtreeOfGoalMapper getSubtreeMapper;
 
     private final GetAbovePartTreeAndBelowAllTreeUseCase getAbovePartTreeAndBelowAllTreeUseCase;
     private final GetAbovePartTreeAndBelowAllTreeMapper getAbovePartTreeAndBelowAllTreeMapper;

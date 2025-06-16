@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.dhabits.fixchaos.planning.domain.entity.Goal;
 import ru.dhabits.fixchaos.planning.domain.repository.GoalRepository;
 import ru.dhabits.fixchaos.planning.error.EntityAlreadyExistsOrDoesNotExistException;
-import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.mapper.GetSubtreeUseCaseMapper;
+import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.mapper.GetSubtreeOfGoalUseCaseMapper;
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto;
 
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class GetSubtreeUseCase {
+public class GetSubtreeOfGoalUseCase {
 
     private final GoalRepository goalRepository;
-    private final GetSubtreeUseCaseMapper getSubtreeUseCaseMapper;
+    private final GetSubtreeOfGoalUseCaseMapper getSubtreeUseCaseMapper;
 
     public GoalResultDto getSubtreeOfNode(UUID id) {
         Goal goal = goalRepository.findById(id).orElseThrow(

@@ -1,17 +1,19 @@
-package ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request;
+package ru.dhabits.fixchaos.planning.usecase.direction.getsubtree.result;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-public class CreateDirectionRequestDto {
+public class DirectionResultDto {
+    private UUID id;
     private String code;
     private String name;
     private String description;
-    private UUID parentId;
+    private List<DirectionResultDto> directions;
 }

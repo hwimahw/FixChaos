@@ -1,4 +1,4 @@
-package ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response;
+package ru.dhabits.fixchaos.planning.inbound.rest.direction.createdirection.response;
 
 import lombok.Getter;
 import lombok.Setter;

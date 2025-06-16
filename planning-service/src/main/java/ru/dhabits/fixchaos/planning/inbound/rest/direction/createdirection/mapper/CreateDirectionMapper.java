@@ -1,10 +1,10 @@
-package ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.mapper;
+package ru.dhabits.fixchaos.planning.inbound.rest.direction.createdirection.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.request.CreateDirectionRequestDto;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.createdirection.response.CreateDirectionResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.direction.createdirection.request.CreateDirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.direction.createdirection.response.CreateDirectionResponseDto;
 import ru.dhabits.fixchaos.planning.usecase.direction.createdirection.command.CreateDirectionCommand;
 
 @Mapper(componentModel = "spring")

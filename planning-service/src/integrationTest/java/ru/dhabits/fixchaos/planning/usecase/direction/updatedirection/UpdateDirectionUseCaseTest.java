@@ -15,7 +15,7 @@ import ru.dhabits.fixchaos.planning.domain.entity.Direction;
 import ru.dhabits.fixchaos.planning.domain.repository.DirectionRepository;
 import ru.dhabits.fixchaos.planning.domain.repository.GoalRepository;
 import ru.dhabits.fixchaos.planning.error.EntityAlreadyExistsOrDoesNotExistException;
-import ru.dhabits.fixchaos.planning.inbound.rest.goal.direction.updatedirection.request.UpdateDirectionRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.direction.updatedirection.request.UpdateDirectionRequestDto;
 
 import java.util.Optional;
 import java.util.UUID;

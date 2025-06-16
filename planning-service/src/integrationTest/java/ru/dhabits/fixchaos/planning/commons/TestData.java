@@ -21,6 +21,10 @@ public class TestData {
     public static final String NAME = "NAME";
     public static final String DESCRIPTION = "DESCRIPTION";
 
+    public static final String CODE_2 = "CODE_2";
+    public static final String NAME_2 = "NAME_2";
+    public static final String DESCRIPTION_2 = "DESCRIPTION_2";
+
     public static final LocalDate START_DATE = LocalDate.of(2024,1,1);
     public static final LocalDate END_DATE = LocalDate.of(2025,1,1);
 

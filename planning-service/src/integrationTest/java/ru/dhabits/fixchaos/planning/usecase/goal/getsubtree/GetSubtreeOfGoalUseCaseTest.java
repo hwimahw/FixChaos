@@ -32,7 +32,7 @@ import static ru.dhabits.fixchaos.planning.commons.TestData.START_DATE;
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DirtiesContext
-public class GetSubtreeUseCaseTest extends TestConfigHelper {
+public class GetSubtreeOfGoalUseCaseTest extends TestConfigHelper {
 
     @Autowired
     private DictionaryService dictionaryService;

@@ -8,7 +8,7 @@ import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface GetSubtreeUseCaseMapper {
+public interface GetSubtreeOfGoalUseCaseMapper {
 
     @Mapping(target = "direction", source = "direction.code")
     GoalResultDto toGoalResultDto(Goal goal);
