@@ -22,7 +22,7 @@ public class GetGoalsInPeriodDecentOrderCase {
     public List<Goal> getGoalsInPeriodDecentOrder(UUID id) {
         List<Goal> allGoals = walkOnDirectionsAndGetAllGoals(id);
         List<Goal> copyAllGoals = new ArrayList<>(allGoals);
-        for(Goal goal : allGoals) {
+        for (Goal goal : allGoals) {
             walkOnGoalsAndDeleteThemFromAllGoals(goal, copyAllGoals);
         }
 
@@ -32,7 +32,7 @@ public class GetGoalsInPeriodDecentOrderCase {
     public List<Goal> walkOnGoalsAndDeleteThemFromAllGoals(Goal goal, List<Goal> allGoals) {
         List<Goal> childrenGoals = goal.getGoals();
         allGoals.removeAll(childrenGoals);
-        for(Goal childGoal : childrenGoals) {
+        for (Goal childGoal : childrenGoals) {
             walkOnGoalsAndDeleteThemFromAllGoals(childGoal, allGoals);
         }
         return allGoals;
@@ -45,7 +45,7 @@ public class GetGoalsInPeriodDecentOrderCase {
         );
         List<Goal> allGoals = new ArrayList<>();
         List<Direction> childrenDirections = direction.getDirections();
-        for(Direction child : childrenDirections) {
+        for (Direction child : childrenDirections) {
             walkOnDirectionsAndGetAllGoalsIter(direction, allGoals);
         }
         return allGoals;
@@ -54,7 +54,7 @@ public class GetGoalsInPeriodDecentOrderCase {
     private void walkOnDirectionsAndGetAllGoalsIter(Direction direction, List<Goal> allGoals) {
         allGoals.addAll(direction.getGoals());
         List<Direction> childrenDirections = direction.getDirections();
-        for(Direction child : childrenDirections) {
+        for (Direction child : childrenDirections) {
             walkOnDirectionsAndGetAllGoalsIter(child, allGoals);
         }
     }
