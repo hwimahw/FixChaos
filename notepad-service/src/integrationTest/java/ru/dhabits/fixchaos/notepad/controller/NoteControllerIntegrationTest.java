@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -96,14 +95,6 @@ public class NoteControllerIntegrationTest extends TestConfigHelper {
         //when
         mockMvc.perform(
                         post("/v1/note")
-                                .with(
-                                        SecurityMockMvcRequestPostProcessors.httpBasic(
-                                                "user",
-                                                "password"
-                                        )
-                                )
-//                        .header("Authorization", "Bearer")
-                                //then
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsBytes(noteDto))
                 )

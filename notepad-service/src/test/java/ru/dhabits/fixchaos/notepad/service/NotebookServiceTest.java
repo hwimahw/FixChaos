@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.model.Note;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
@@ -34,10 +34,10 @@ public class NotebookServiceTest {
     @Autowired
     private NotebookMapper notebookMapper;
 
-    @MockBean
+    @MockitoBean
     private FolderRepository folderRepository;
 
-    @MockBean
+    @MockitoBean
     private NotebookRepository notebookRepository;
 
     @Test

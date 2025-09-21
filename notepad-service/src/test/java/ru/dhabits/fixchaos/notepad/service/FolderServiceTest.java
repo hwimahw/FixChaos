@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import ru.dhabits.fixchaos.notepad.db.model.Folder;
 import ru.dhabits.fixchaos.notepad.db.model.Note;
 import ru.dhabits.fixchaos.notepad.db.model.Notebook;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = {FolderMapperImpl.class, FolderServiceImpl.class})
 public class FolderServiceTest {
-    @MockBean
+    @MockitoBean
     private FolderRepository folderRepository;
 
     @Autowired

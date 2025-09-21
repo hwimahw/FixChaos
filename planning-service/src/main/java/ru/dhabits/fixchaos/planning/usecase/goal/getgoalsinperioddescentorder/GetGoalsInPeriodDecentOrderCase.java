@@ -5,11 +5,8 @@ import org.springframework.stereotype.Component;
 import ru.dhabits.fixchaos.planning.domain.entity.Direction;
 import ru.dhabits.fixchaos.planning.domain.entity.Goal;
 import ru.dhabits.fixchaos.planning.domain.repository.DirectionRepository;
-import ru.dhabits.fixchaos.planning.domain.repository.GoalRepository;
 import ru.dhabits.fixchaos.planning.error.EntityAlreadyExistsOrDoesNotExistException;
-import ru.dhabits.fixchaos.planning.usecase.goal.getaboveparttreeandbelowalltree.mapper.GetAbovePartTreeAndBelowAllTreeUseCaseMapper;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.mapper.GetGoalsInPeriodDecentOrderUseCaseMapper;
-import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto;
 
 import java.util.ArrayList;
 import java.util.List;

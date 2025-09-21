@@ -67,8 +67,6 @@ subprojects { ->
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation "com.h2database:h2:${h2DataBaseVersion}"
         testImplementation "org.hamcrest:hamcrest:${hamcrestVersion}"
-        implementation "org.springframework.boot:spring-boot-starter-security:${securityVersion}"
-        testImplementation "org.springframework.security:spring-security-test:${securityTestVersion}"
         implementation "com.vladmihalcea:hibernate-types-60:${hibernateTypesVersion}"
         implementation 'org.hibernate.orm:hibernate-core:6.3.1.Final'
         testImplementation("org.assertj:assertj-core:3.6.1")
