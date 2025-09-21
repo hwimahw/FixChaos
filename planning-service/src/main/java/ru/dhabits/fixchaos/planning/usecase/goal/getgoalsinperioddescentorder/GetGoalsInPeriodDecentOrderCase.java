@@ -25,7 +25,8 @@ public class GetGoalsInPeriodDecentOrderCase {
         for(Goal goal : allGoals) {
             walkOnGoalsAndDeleteThemFromAllGoals(goal, copyAllGoals);
         }
-        return allGoals;
+
+        return copyAllGoals;
     }
 
     public List<Goal> walkOnGoalsAndDeleteThemFromAllGoals(Goal goal, List<Goal> allGoals) {
@@ -54,7 +55,7 @@ public class GetGoalsInPeriodDecentOrderCase {
         allGoals.addAll(direction.getGoals());
         List<Direction> childrenDirections = direction.getDirections();
         for(Direction child : childrenDirections) {
-            walkOnDirectionsAndGetAllGoalsIter(direction, allGoals);
+            walkOnDirectionsAndGetAllGoalsIter(child, allGoals);
         }
     }
 }

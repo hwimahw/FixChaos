@@ -41,6 +41,6 @@ public class Direction {
     @JoinColumn(name = "parent_id")
     private Direction direction;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "direction")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "direction")
     private List<Goal> goals;
 }

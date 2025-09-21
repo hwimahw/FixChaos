@@ -47,8 +47,8 @@ public class GoalController {
     }
 
     @GetMapping(value = "/withperiod/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<Goal>> getGoalsInPeriodDecentOrder(@PathVariable("id") UUID id) {
+    public List<Goal> getGoalsInPeriodDecentOrder(@PathVariable("id") UUID id) {
         List<Goal> goals = getGoalsInPeriodDecentOrderCase.getGoalsInPeriodDecentOrder(id);
-        return ResponseEntity.ok(goals);
+        return goals;
     }
 }
