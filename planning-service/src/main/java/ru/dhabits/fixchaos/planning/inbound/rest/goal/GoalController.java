@@ -5,12 +5,18 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.dhabits.fixchaos.planning.domain.entity.Goal;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.mapper.CreateGoalMapper;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.request.CreateGoalRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.response.CreateGoalResponseDto;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getaboveparttreeandbelowalltree.mapper.GetAbovePartTreeAndBelowAllTreeMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.mapper.GetSubtreeOfGoalMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.response.GoalResponseDto;
+import ru.dhabits.fixchaos.planning.usecase.goal.creategoal.CreateGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getaboveparttreeandbelowalltree.GetAbovePartTreeAndBelowAllTreeUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.GetGoalsInPeriodDecentOrderCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.mapper.GetGoalsInPeriodDecentOrderUseCaseMapper;
@@ -34,6 +40,9 @@ public class GoalController {
     private final GetGoalsInPeriodDecentOrderCase getGoalsInPeriodDecentOrderCase;
     private final GetGoalsInPeriodDecentOrderUseCaseMapper getGoalsInPeriodDecentOrderUseCaseMapper;
 
+    private final CreateGoalUseCase createGoalUseCase;
+    private final CreateGoalMapper createGoalMapper;
+
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<GoalResponseDto> getSubtree(@PathVariable("id") UUID id) {
         GoalResultDto goalResultDto = getSubtreeUseCase.getSubtreeOfNode(id);
@@ -50,5 +59,12 @@ public class GoalController {
     public List<Goal> getGoalsInPeriodDecentOrder(@PathVariable("id") UUID id) {
         List<Goal> goals = getGoalsInPeriodDecentOrderCase.getGoalsInPeriodDecentOrder(id);
         return goals;
+    }
+
+    @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public CreateGoalResponseDto createGoal(@RequestBody CreateGoalRequestDto createGoalRequestDto) {
+        Goal goal = createGoalUseCase.execute(createGoalMapper.toGoalCommand(createGoalRequestDto));
+        CreateGoalResponseDto createGoalResponseDto = createGoalMapper.toGoalResponseDto(goal);
+        return createGoalResponseDto;
     }
 }

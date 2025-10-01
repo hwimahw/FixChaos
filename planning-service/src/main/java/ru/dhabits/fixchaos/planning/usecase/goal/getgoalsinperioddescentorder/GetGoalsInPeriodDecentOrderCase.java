@@ -44,10 +44,7 @@ public class GetGoalsInPeriodDecentOrderCase {
                 () -> new EntityAlreadyExistsOrDoesNotExistException(String.format("Направление с id %s не найдено", id))
         );
         List<Goal> allGoals = new ArrayList<>();
-        List<Direction> childrenDirections = direction.getDirections();
-        for (Direction child : childrenDirections) {
-            walkOnDirectionsAndGetAllGoalsIter(direction, allGoals);
-        }
+        walkOnDirectionsAndGetAllGoalsIter(direction, allGoals);
         return allGoals;
     }
 
