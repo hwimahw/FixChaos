@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +17,16 @@ import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.response.Create
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getaboveparttreeandbelowalltree.mapper.GetAbovePartTreeAndBelowAllTreeMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.mapper.GetSubtreeOfGoalMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.response.GoalResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.mapper.UpdateGoalMapper;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.request.UpdateGoalRequestDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.response.UpdateGoalResponseDto;
 import ru.dhabits.fixchaos.planning.usecase.goal.creategoal.CreateGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getaboveparttreeandbelowalltree.GetAbovePartTreeAndBelowAllTreeUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.GetGoalsInPeriodDecentOrderCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.mapper.GetGoalsInPeriodDecentOrderUseCaseMapper;
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.GetSubtreeOfGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto;
+import ru.dhabits.fixchaos.planning.usecase.goal.updategoal.UpdateGoalUseCase;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,6 +47,9 @@ public class GoalController {
 
     private final CreateGoalUseCase createGoalUseCase;
     private final CreateGoalMapper createGoalMapper;
+
+    private final UpdateGoalUseCase updateGoalUseCase;
+    private final UpdateGoalMapper updateGoalMapper;
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<GoalResponseDto> getSubtree(@PathVariable("id") UUID id) {
@@ -66,5 +74,18 @@ public class GoalController {
         Goal goal = createGoalUseCase.execute(createGoalMapper.toGoalCommand(createGoalRequestDto));
         CreateGoalResponseDto createGoalResponseDto = createGoalMapper.toGoalResponseDto(goal);
         return createGoalResponseDto;
+    }
+
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<UpdateGoalResponseDto> updateGoal(
+            @PathVariable("id") UUID id,
+            @RequestBody UpdateGoalRequestDto updateGoalRequestDto
+    ) {
+
+        Goal goal = updateGoalUseCase.execute(
+                updateGoalMapper.toUpdateGoalCommand(id, updateGoalRequestDto)
+        );
+
+        return ResponseEntity.ok(updateGoalMapper.toUpdateGoalResponseDto(goal));
     }
 }
