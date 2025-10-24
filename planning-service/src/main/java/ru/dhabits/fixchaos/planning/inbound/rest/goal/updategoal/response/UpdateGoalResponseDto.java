@@ -17,5 +17,6 @@ public class UpdateGoalResponseDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private GoalType goalType;
-    private UpdateGoalResponseDto parentDirection;
+    private UUID directionId;
+    private UpdateGoalResponseDto parentGoal;
 }

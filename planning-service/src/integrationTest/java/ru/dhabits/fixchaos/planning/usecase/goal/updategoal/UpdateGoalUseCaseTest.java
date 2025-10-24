@@ -17,7 +17,6 @@ import ru.dhabits.fixchaos.planning.domain.repository.DirectionRepository;
 import ru.dhabits.fixchaos.planning.domain.repository.GoalRepository;
 import ru.dhabits.fixchaos.planning.enumeration.GoalType;
 import ru.dhabits.fixchaos.planning.error.EntityAlreadyExistsOrDoesNotExistException;
-import ru.dhabits.fixchaos.planning.inbound.rest.direction.updatedirection.request.UpdateDirectionRequestDto;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.request.UpdateGoalRequestDto;
 
 import java.time.LocalDate;
@@ -27,7 +26,14 @@ import java.util.UUID;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.dhabits.fixchaos.planning.commons.TestData.CODE;
+import static ru.dhabits.fixchaos.planning.commons.TestData.CODE_2;
+import static ru.dhabits.fixchaos.planning.commons.TestData.DESCRIPTION;
+import static ru.dhabits.fixchaos.planning.commons.TestData.DESCRIPTION_2;
 import static ru.dhabits.fixchaos.planning.commons.TestData.NAME;
+import static ru.dhabits.fixchaos.planning.commons.TestData.NAME_2;
+import static ru.dhabits.fixchaos.planning.commons.TestData.NAME_3;
+import static ru.dhabits.fixchaos.planning.commons.TestData.NAME_4;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -50,14 +56,14 @@ public class UpdateGoalUseCaseTest extends TestConfigHelper {
     @Test
     public void execute_Successful_WithNoParentGoal() throws Exception {
         Direction direction = new Direction()
-                .setCode("CODE")
-                .setName("NAME")
-                .setDescription("DESCRIPTION");
+                .setCode(CODE)
+                .setName(NAME)
+                .setDescription(DESCRIPTION);
         direction = directionRepository.save(direction);
 
         Goal goal = new Goal().setName(NAME)
                 .setGoalType(GoalType.SHORT_TERM)
-                .setName("NAME")
+                .setName(NAME)
                 .setDirection(direction)
                 .setStartDate(LocalDate.of(2025, 1, 1))
                 .setEndDate(LocalDate.of(2026, 1, 1));
@@ -66,9 +72,9 @@ public class UpdateGoalUseCaseTest extends TestConfigHelper {
         Optional<Goal> optionalGoal = goalRepository.findById(goal.getId());
         Assertions.assertTrue(optionalGoal.isPresent());
         Goal goalActual = optionalGoal.get();
-        Assertions.assertEquals("NAME", goalActual.getName());
+        Assertions.assertEquals(NAME, goalActual.getName());
         UpdateGoalRequestDto updateGoalRequestDto = new UpdateGoalRequestDto()
-                .setName("NAME2")
+                .setName(NAME_2)
                 .setStartDate(LocalDate.of(2025, 2, 2))
                 .setEndDate(LocalDate.of(2026, 3, 3))
                 .setGoalType(GoalType.LONG_TERM)
@@ -80,101 +86,165 @@ public class UpdateGoalUseCaseTest extends TestConfigHelper {
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("NAME2"))
+                .andExpect(jsonPath("$.id").value(goal.getId().toString()))
+                .andExpect(jsonPath("$.name").value(NAME_2))
                 .andExpect(jsonPath("$.startDate").value("2025-02-02"))
-                .andExpect(jsonPath("$.endDate").value("2026-03-03"));
+                .andExpect(jsonPath("$.endDate").value("2026-03-03"))
+                .andExpect(jsonPath("$.directionId").value(direction.getId().toString()));
     }
 
     @Test
-    public void execute_Successful_WithParentDirection() throws Exception {
-        Direction parentDirection = new Direction()
-                .setCode("PARENT_CODE")
-                .setName("PARENT_NAME")
-                .setDescription("PARENT_DESCRIPTION");
-        parentDirection = directionRepository.save(parentDirection);
-
+    public void execute_Successful_WithNewParentGoalAndNewDirection() throws Exception {
         Direction direction = new Direction()
-                .setCode("CODE")
-                .setName("NAME")
-                .setDescription("DESCRIPTION")
-                .setDirection(parentDirection);
+                .setCode(CODE)
+                .setName(NAME)
+                .setDescription(DESCRIPTION);
         direction = directionRepository.save(direction);
 
-        Direction newParentDirection = new Direction()
-                .setCode("PARENT_CODE_2")
-                .setName("PARENT_NAME_2")
-                .setDescription("PARENT_DESCRIPTION_2");
-        newParentDirection = directionRepository.save(newParentDirection);
+        Direction newDirection = new Direction()
+                .setCode(CODE_2)
+                .setName(NAME_2)
+                .setDescription(DESCRIPTION_2);
+        newDirection = directionRepository.save(direction);
 
-        Optional<Direction> optionalDirection = directionRepository.findById(direction.getId());
-        Assertions.assertTrue(optionalDirection.isPresent());
-        Direction directionActual = optionalDirection.get();
-        Assertions.assertEquals("CODE", directionActual.getCode());
-        Assertions.assertEquals("NAME", directionActual.getName());
-        Assertions.assertEquals("DESCRIPTION", directionActual.getDescription());
-        Assertions.assertNotNull(directionActual.getDirection());
-        Assertions.assertEquals(parentDirection.getId().toString(), directionActual.getDirection().getId().toString());
-        UpdateDirectionRequestDto updateDirectionRequestDto = new UpdateDirectionRequestDto()
-                .setCode("CODE2")
-                .setName("NAME2")
-                .setDescription("DESCRIPTION2")
-                .setParentId(newParentDirection.getId());
+        Goal goal = new Goal()
+                .setName(NAME)
+                .setGoalType(GoalType.SHORT_TERM)
+                .setDirection(direction)
+                .setStartDate(LocalDate.of(2025, 1, 1))
+                .setEndDate(LocalDate.of(2026, 1, 1));
+        goal = goalRepository.save(goal);
+
+        Goal goal2 = new Goal()
+                .setName(NAME_2)
+                .setGoalType(GoalType.SHORT_TERM)
+                .setDirection(direction)
+                .setStartDate(LocalDate.of(2027, 1, 1))
+                .setEndDate(LocalDate.of(2028, 1, 1))
+                .setGoal(goal);
+        goal2 = goalRepository.save(goal);
+
+        Goal newParent = new Goal()
+                .setName(NAME_4)
+                .setGoalType(GoalType.SHORT_TERM)
+                .setDirection(direction)
+                .setStartDate(LocalDate.of(2029, 1, 1))
+                .setEndDate(LocalDate.of(2030, 1, 1))
+                .setGoal(goal);
+        newParent = goalRepository.save(goal);
+
+        Optional<Goal> optionalGoal = goalRepository.findById(goal.getId());
+        Assertions.assertTrue(optionalGoal.isPresent());
+        Goal goalActual = optionalGoal.get();
+        Assertions.assertEquals(NAME, goalActual.getName());
+        UpdateGoalRequestDto updateGoalRequestDto = new UpdateGoalRequestDto()
+                .setName(NAME_3)
+                .setStartDate(LocalDate.of(2025, 2, 2))
+                .setEndDate(LocalDate.of(2026, 3, 3))
+                .setGoalType(GoalType.LONG_TERM)
+                .setParentId(newParent.getId())
+                .setDirectionId(newDirection.getId());
 
         mockMvc.perform(
-                put("/v1/direction/{id}", direction.getId())
-                        .content(objectMapper.writeValueAsBytes(updateDirectionRequestDto))
+                put("/v1/goal/{id}", goal.getId())
+                        .content(objectMapper.writeValueAsBytes(updateGoalRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value("CODE2"))
-                .andExpect(jsonPath("$.name").value("NAME2"))
-                .andExpect(jsonPath("$.description").value("DESCRIPTION2"))
-                .andExpect(jsonPath("$.parentDirection").isNotEmpty())
-                .andExpect(jsonPath("$.parentDirection.id").value(newParentDirection.getId().toString()));
-
+                .andExpect(jsonPath("$.id").value(goal.getId().toString()))
+                .andExpect(jsonPath("$.name").value("NAME_3"))
+                .andExpect(jsonPath("$.startDate").value("2025-02-02"))
+                .andExpect(jsonPath("$.endDate").value("2026-03-03"))
+                .andExpect(jsonPath("$.directionId").value(newDirection.getId().toString()))
+                .andExpect(jsonPath("$.parentGoal.id").value(newParent.getId().toString()));
     }
 
     @Test
-    public void executeWithException_WithDirectionThatDoesNotExist() throws Exception {
-        UpdateDirectionRequestDto updateDirectionRequestDto = new UpdateDirectionRequestDto()
-                .setCode("CODE2")
-                .setName("NAME2")
-                .setDescription("DESCRIPTION2")
-                .setParentId(null);
-
-        mockMvc.perform(
-                put("/v1/direction/{id}",
-                        UUID.fromString("53d2f8bc-ea56-45b4-8e28-96f14b766caf")
-                ).contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(updateDirectionRequestDto))
-        )
-                .andExpect(status().is4xxClientError())
-                .andExpect(
-                        result -> Assertions.assertInstanceOf(
-                                EntityAlreadyExistsOrDoesNotExistException.class,
-                                result.getResolvedException()
-                        )
-                );
-    }
-
-    @Test
-    public void executeWithException_WithParentDirectionThatDoesNotExist() throws Exception {
-
+    public void execute_Successful_WithNoParentGoalAndNewDirection() throws Exception {
         Direction direction = new Direction()
-                .setCode("CODE")
-                .setName("NAME")
-                .setDescription("DESCRIPTION");
+                .setCode(CODE)
+                .setName(NAME)
+                .setDescription(DESCRIPTION);
         direction = directionRepository.save(direction);
 
-        UpdateDirectionRequestDto updateDirectionRequestDto = new UpdateDirectionRequestDto()
-                .setCode("CODE2")
-                .setName("NAME2")
-                .setDescription("DESCRIPTION2")
-                .setParentId(UUID.randomUUID());
+        Direction newDirection = new Direction()
+                .setCode(CODE_2)
+                .setName(NAME_2)
+                .setDescription(DESCRIPTION_2);
+        newDirection = directionRepository.save(direction);
+
+        Goal goal = new Goal()
+                .setName(NAME)
+                .setGoalType(GoalType.SHORT_TERM)
+                .setDirection(direction)
+                .setStartDate(LocalDate.of(2025, 1, 1))
+                .setEndDate(LocalDate.of(2026, 1, 1));
+        goal = goalRepository.save(goal);
+
+        Goal goal2 = new Goal()
+                .setName(NAME_2)
+                .setGoalType(GoalType.SHORT_TERM)
+                .setDirection(direction)
+                .setStartDate(LocalDate.of(2027, 1, 1))
+                .setEndDate(LocalDate.of(2028, 1, 1))
+                .setGoal(goal);
+        goal2 = goalRepository.save(goal);
+
+        Optional<Goal> optionalGoal = goalRepository.findById(goal.getId());
+        Assertions.assertTrue(optionalGoal.isPresent());
+        Goal goalActual = optionalGoal.get();
+        Assertions.assertEquals(NAME, goalActual.getName());
+        UpdateGoalRequestDto updateGoalRequestDto = new UpdateGoalRequestDto()
+                .setName(NAME_3)
+                .setStartDate(LocalDate.of(2025, 2, 2))
+                .setEndDate(LocalDate.of(2026, 3, 3))
+                .setGoalType(GoalType.LONG_TERM)
+                .setParentId(null)
+                .setDirectionId(newDirection.getId());
 
         mockMvc.perform(
-                put("/v1/direction/{id}", direction.getId())
-                        .content(objectMapper.writeValueAsBytes(updateDirectionRequestDto))
+                put("/v1/goal/{id}", goal.getId())
+                        .content(objectMapper.writeValueAsBytes(updateGoalRequestDto))
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(goal.getId().toString()))
+                .andExpect(jsonPath("$.name").value("NAME_3"))
+                .andExpect(jsonPath("$.startDate").value("2025-02-02"))
+                .andExpect(jsonPath("$.endDate").value("2026-03-03"))
+                .andExpect(jsonPath("$.directionId").value(newDirection.getId().toString()))
+                .andExpect(jsonPath("$.parentGoal").isEmpty());
+    }
+
+    @Test
+    public void executeWithException_WithWrongIdOfGoal() throws Exception {
+        Direction direction = new Direction()
+                .setCode(CODE)
+                .setName(NAME)
+                .setDescription(DESCRIPTION);
+        direction = directionRepository.save(direction);
+
+        Goal goal = new Goal().setName(NAME)
+                .setGoalType(GoalType.SHORT_TERM)
+                .setName(NAME)
+                .setDirection(direction)
+                .setStartDate(LocalDate.of(2025, 1, 1))
+                .setEndDate(LocalDate.of(2026, 1, 1));
+        goal = goalRepository.save(goal);
+
+        Optional<Goal> optionalGoal = goalRepository.findById(goal.getId());
+        Assertions.assertTrue(optionalGoal.isPresent());
+        Goal goalActual = optionalGoal.get();
+        Assertions.assertEquals(NAME, goalActual.getName());
+        UpdateGoalRequestDto updateGoalRequestDto = new UpdateGoalRequestDto()
+                .setName(NAME)
+                .setStartDate(LocalDate.of(2025, 2, 2))
+                .setEndDate(LocalDate.of(2026, 3, 3))
+                .setGoalType(GoalType.LONG_TERM)
+                .setDirectionId(direction.getId());
+        mockMvc.perform(
+                put("/v1/goal/{id}", UUID.fromString("877c6cec-e21a-4e5b-aad4-48552ac646f1"))
+                        .content(objectMapper.writeValueAsBytes(updateGoalRequestDto))
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().is4xxClientError())
@@ -184,7 +254,5 @@ public class UpdateGoalUseCaseTest extends TestConfigHelper {
                                 result.getResolvedException()
                         )
                 );
-
     }
-
 }

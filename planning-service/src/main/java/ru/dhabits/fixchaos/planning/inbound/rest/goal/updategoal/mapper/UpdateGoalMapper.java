@@ -11,7 +11,8 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface UpdateGoalMapper {
 
-    @Mapping(target = "parentDirection", source = "direction")
+    @Mapping(target = "parentGoal", source = "goal")
+    @Mapping(target = "directionId", source = "direction.id")
     UpdateGoalResponseDto toUpdateGoalResponseDto(Goal goal);
 
     UpdateGoalCommand toUpdateGoalCommand(UUID id, UpdateGoalRequestDto updateGoalRequestDto);

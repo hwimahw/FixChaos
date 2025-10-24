@@ -32,7 +32,8 @@ public class UpdateGoalUseCase {
         goal.setStartDate(updateGoalCommand.getStartDate());
         goal.setEndDate(updateGoalCommand.getEndDate());
         goal.setGoalType(updateGoalCommand.getGoalType());
-        if(updateGoalCommand.getDirectionId() != null) {
+        if(updateGoalCommand.getDirectionId() != null
+                && !updateGoalCommand.getDirectionId().equals(goal.getDirection().getId())) {
                 Direction direction = directionRepository.findById(updateGoalCommand.getDirectionId()).orElseThrow(
                         () -> new EntityAlreadyExistsOrDoesNotExistException(
                                 String.format(
