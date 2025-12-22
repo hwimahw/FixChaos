@@ -3,6 +3,7 @@ package ru.dhabits.fixchaos.planning.inbound.rest.goal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.mapper.UpdateGo
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.request.UpdateGoalRequestDto;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.response.UpdateGoalResponseDto;
 import ru.dhabits.fixchaos.planning.usecase.goal.creategoal.CreateGoalUseCase;
+import ru.dhabits.fixchaos.planning.usecase.goal.deletegoal.DeleteGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getaboveparttreeandbelowalltree.GetAbovePartTreeAndBelowAllTreeUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.GetGoalsInPeriodDecentOrderCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.mapper.GetGoalsInPeriodDecentOrderUseCaseMapper;
@@ -50,6 +52,8 @@ public class GoalController {
 
     private final UpdateGoalUseCase updateGoalUseCase;
     private final UpdateGoalMapper updateGoalMapper;
+
+    private final DeleteGoalUseCase deleteGoalUseCase;
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<GoalResponseDto> getSubtree(@PathVariable("id") UUID id) {
@@ -87,5 +91,11 @@ public class GoalController {
         );
 
         return ResponseEntity.ok(updateGoalMapper.toUpdateGoalResponseDto(goal));
+    }
+
+    @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> deleteGoal(@PathVariable("id") UUID id) {
+        deleteGoalUseCase.execute(id);
+        return ResponseEntity.status(204).build();
     }
 }

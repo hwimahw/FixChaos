@@ -18,5 +18,6 @@ public class GoalResponseDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private GoalType goalType;
+    private String direction;
     private List<GoalResponseDto> goals;
 }
