@@ -13,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 public class GoalResponseDto {
+
     private UUID id;
     private String name;
     private LocalDate startDate;

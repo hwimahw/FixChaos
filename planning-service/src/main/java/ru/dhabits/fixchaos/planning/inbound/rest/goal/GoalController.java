@@ -16,6 +16,8 @@ import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.mapper.CreateGo
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.request.CreateGoalRequestDto;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.creategoal.response.CreateGoalResponseDto;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getaboveparttreeandbelowalltree.mapper.GetAbovePartTreeAndBelowAllTreeMapper;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.getgoalsinperioddescentorder.GetGoalsInPeriodResponseDto;
+import ru.dhabits.fixchaos.planning.inbound.rest.goal.getgoalsinperioddescentorder.mapper.GetGoalsInPeriodMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.mapper.GetSubtreeOfGoalMapper;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.getsubtree.response.GoalResponseDto;
 import ru.dhabits.fixchaos.planning.inbound.rest.goal.updategoal.mapper.UpdateGoalMapper;
@@ -45,7 +47,7 @@ public class GoalController {
     private final GetAbovePartTreeAndBelowAllTreeMapper getAbovePartTreeAndBelowAllTreeMapper;
 
     private final GetGoalsInPeriodDecentOrderCase getGoalsInPeriodDecentOrderCase;
-    private final GetGoalsInPeriodDecentOrderUseCaseMapper getGoalsInPeriodDecentOrderUseCaseMapper;
+    private final GetGoalsInPeriodMapper getGoalsInPeriodMapper;
 
     private final CreateGoalUseCase createGoalUseCase;
     private final CreateGoalMapper createGoalMapper;
@@ -68,9 +70,9 @@ public class GoalController {
     }
 
     @GetMapping(value = "/withperiod/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Goal> getGoalsInPeriodDecentOrder(@PathVariable("id") UUID id) {
+    public List<GetGoalsInPeriodResponseDto> getGoalsInPeriodDecentOrder(@PathVariable("id") UUID id) {
         List<Goal> goals = getGoalsInPeriodDecentOrderCase.getGoalsInPeriodDecentOrder(id);
-        return goals;
+        return getGoalsInPeriodMapper.toGetGoalsInPeriodResponseDto(goals);
     }
 
     @PostMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
