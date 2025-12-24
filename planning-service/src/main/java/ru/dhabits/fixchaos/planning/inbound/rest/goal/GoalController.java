@@ -27,7 +27,6 @@ import ru.dhabits.fixchaos.planning.usecase.goal.creategoal.CreateGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.deletegoal.DeleteGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getaboveparttreeandbelowalltree.GetAbovePartTreeAndBelowAllTreeUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.GetGoalsInPeriodDecentOrderCase;
-import ru.dhabits.fixchaos.planning.usecase.goal.getgoalsinperioddescentorder.mapper.GetGoalsInPeriodDecentOrderUseCaseMapper;
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.GetSubtreeOfGoalUseCase;
 import ru.dhabits.fixchaos.planning.usecase.goal.getsubtree.result.GoalResultDto;
 import ru.dhabits.fixchaos.planning.usecase.goal.updategoal.UpdateGoalUseCase;
